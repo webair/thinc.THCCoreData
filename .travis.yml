@@ -1,6 +1,3 @@
 language: objective-c
-before_install:
-    - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
-    - pod install
 script:
     - xcodebuild -workspace 'THCCoreData.xcworkspace' -scheme 'THCCoreData' -sdk 'iphonesimulator' -configuration Debug clean test
