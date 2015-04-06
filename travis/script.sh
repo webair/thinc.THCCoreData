@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 
-xctool -workspace THCCoreData -scheme THCCoreData build test
+xcodebuild -workspace THCCoreData.xcworkspace -scheme 'THCCoreData' -configuration Debug clean test
