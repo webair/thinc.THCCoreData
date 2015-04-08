@@ -10,7 +10,7 @@
 		030B217D1AD59ADF00E23445 /* StubObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030B217C1AD59ADF00E23445 /* StubObject.swift */; };
 		030BF6A71AD307C800F804C5 /* TestManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030BF6A61AD307C800F804C5 /* TestManagedObjectContext.swift */; };
 		030BF6AB1AD3080800F804C5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 030BF6A91AD3080800F804C5 /* Model.xcdatamodeld */; };
-		03A11DB61AD3364C00D87610 /* ManageObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A11DB51AD3364C00D87610 /* ManageObjectContextExtension.swift */; };
+		03A11DB61AD3364C00D87610 /* ManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A11DB51AD3364C00D87610 /* ManagedObjectContextExtension.swift */; };
 		03CE355C1AD2A6E30082AB52 /* THCCoreData.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CE355B1AD2A6E30082AB52 /* THCCoreData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03FBA0CD1AD321E2004FE0AE /* THCCoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03CE35561AD2A6E30082AB52 /* THCCoreData.framework */; };
 		35CE7B10CD681861F9CE4DDC /* TestContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35CE77CF9F4AEE7B702FB4F5 /* TestContextManager.swift */; };
@@ -24,7 +24,7 @@
 		030BF6B21AD31DEB00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		030BF6B41AD31E1C00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		03A11DB01AD3257100D87610 /* Pods_THCCoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_THCCoreData.framework; path = "Pods/../build/Debug-iphoneos/Pods_THCCoreData.framework"; sourceTree = "<group>"; };
-		03A11DB51AD3364C00D87610 /* ManageObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageObjectContextExtension.swift; sourceTree = "<group>"; };
+		03A11DB51AD3364C00D87610 /* ManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		03CE35561AD2A6E30082AB52 /* THCCoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = THCCoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CE355A1AD2A6E30082AB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03CE355B1AD2A6E30082AB52 /* THCCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THCCoreData.h; sourceTree = "<group>"; };
@@ -103,7 +103,7 @@
 		03A11DB31AD333D900D87610 /* context */ = {
 			isa = PBXGroup;
 			children = (
-				03A11DB51AD3364C00D87610 /* ManageObjectContextExtension.swift */,
+				03A11DB51AD3364C00D87610 /* ManagedObjectContextExtension.swift */,
 			);
 			path = context;
 			sourceTree = "<group>";
@@ -320,7 +320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35CE7DCCFE88F7F8D6690DAC /* ContextManager.swift in Sources */,
-				03A11DB61AD3364C00D87610 /* ManageObjectContextExtension.swift in Sources */,
+				03A11DB61AD3364C00D87610 /* ManagedObjectContextExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,11 +19,14 @@ public protocol ManagedObjectEntity {
 }
 
 public extension NSManagedObjectContext {
-
-//    public func insertEntityByName(entityName: String) -> AnyObject {
-//        return NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: self)
-//    }
     
+    /**
+    Creates a instance of the given ManagedObject class
+    
+    :param: objectType Type of the managed object
+    
+    :returns: Instance of the created ManagedObject
+    */
     public func createObject<T:ManagedObjectEntity>(objectType: T.Type) -> T {
         return NSEntityDescription.insertNewObjectForEntityForName(objectType.entityName(), inManagedObjectContext: self) as T
     }

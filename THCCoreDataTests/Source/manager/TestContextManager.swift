@@ -52,7 +52,7 @@ class TestContextManager: XCTestCase {
         let objectModel = NSManagedObjectModel()
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
         let manager = ContextManager(persistanceStoreCoordinator: coordinator)
-        let privateContext = manager.privateContext()
+        let privateContext = manager.privateContext
         XCTAssertEqual(manager.mainContext, privateContext.parentContext!)
         XCTAssertEqual(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType, privateContext.concurrencyType)
     }
