@@ -30,7 +30,7 @@
 		03CE35671AD2A6E30082AB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34AA241D9817D441194720DE /* Pods-THCCoreData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THCCoreData.release.xcconfig"; path = "Pods/Target Support Files/Pods-THCCoreData/Pods-THCCoreData.release.xcconfig"; sourceTree = "<group>"; };
 		35CE7398181EF7792B3AB1F8 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
-		35CE77CF9F4AEE7B702FB4F5 /* TestContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestContextManager.swift; sourceTree = "<group>"; };
+		35CE77CF9F4AEE7B702FB4F5 /* TestContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestContextManager.swift; path = ../manager/TestContextManager.swift; sourceTree = "<group>"; };
 		3736F234333EE28F0D08503B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		5CADA650457230C11C7F2347 /* Pods-THCCoreData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THCCoreData.debug.xcconfig"; path = "Pods/Target Support Files/Pods-THCCoreData/Pods-THCCoreData.debug.xcconfig"; sourceTree = "<group>"; };
 		8240BB53434954CD625502AC /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -60,6 +60,7 @@
 		030BF6A51AD307A100F804C5 /* context */ = {
 			isa = PBXGroup;
 			children = (
+				35CE77CF9F4AEE7B702FB4F5 /* TestContextManager.swift */,
 				030BF6A61AD307C800F804C5 /* TestManagedObjectContext.swift */,
 			);
 			path = context;
@@ -169,7 +170,6 @@
 		35CE77CF03A1265DBC384DC6 /* manager */ = {
 			isa = PBXGroup;
 			children = (
-				35CE77CF9F4AEE7B702FB4F5 /* TestContextManager.swift */,
 			);
 			path = manager;
 			sourceTree = "<group>";
