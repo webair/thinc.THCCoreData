@@ -31,4 +31,8 @@ public extension NSManagedObjectContext {
         return NSEntityDescription.insertNewObjectForEntityForName(objectType.entityName(), inManagedObjectContext: self) as T
     }
     
+    public func fetchRequest<T:ManagedObjectEntity>(objectType: T.Type) -> NSFetchRequest {
+        return NSFetchRequest(entityName: objectType.entityName())
+    }
+    
 }

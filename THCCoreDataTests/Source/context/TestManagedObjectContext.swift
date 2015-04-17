@@ -23,6 +23,12 @@ class TestManagedObjectContext: XCTestCase {
         self.manager = ContextManager(persistanceStoreCoordinator: coordinator)
     }
     
+    func testFetchRequest() {
+        let context = self.manager!.mainContext
+        let fetchRequest = context.fetchRequest(StubObject.self)
+        XCTAssertEqual(StubObject.entityName(), fetchRequest.entityName!)
+    }
+    
     func testCreateObject() {
         let context = self.manager!.mainContext
         let stub: StubObject = context.createObject(StubObject.self)
