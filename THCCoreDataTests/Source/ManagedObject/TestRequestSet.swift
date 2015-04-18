@@ -80,4 +80,14 @@ class TestRequestSet: CoreDataTestCase {
         requestSet.filter(predicate1).filter(predicate2, mode: FilterMode.OR)
         XCTAssertEqual(NSPredicate(format: "name='test1' OR name='test2'"), requestSet.fetchRequest.predicate!)
     }
+    
+    func testLimit() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        let obj1 = context.createObject(StubObject.self)
+        let obj2 = context.createObject(StubObject.self)
+        XCTAssertEqual(2, requestSet.count)
+        requestSet.limit(1)
+        XCTAssertEqual(1, requestSet.count)
+    }
 }

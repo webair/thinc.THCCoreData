@@ -75,6 +75,11 @@ public class RequestSet<T:ManagedObjectEntity>: SequenceType {
         return self
     }
     
+    public func limit(limit:Int) -> Self {
+        self.fetchRequest.fetchLimit = limit
+        return self
+    }
+    
     public init(context:NSManagedObjectContext) {
         self.context = context
         self.fetchRequest = self.context.fetchRequest(T)
