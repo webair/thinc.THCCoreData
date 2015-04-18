@@ -9,6 +9,10 @@
 import Foundation
 import CoreData
 
+public enum FilterMode {
+    case AND,OR
+}
+
 public class RequestSet<T:ManagedObjectEntity>: SequenceType {
     
     private var objects:[NSManagedObject]?
@@ -44,22 +48,27 @@ public class RequestSet<T:ManagedObjectEntity>: SequenceType {
         }
     }
     
-    public func filter(predicate:NSPredicate) -> Self {
+    public func filter(predicate:NSPredicate, mode:FilterMode=FilterMode.AND) -> Self {
         //TODO: validate predicate
         if let fetchPredicate = self.fetchRequest.predicate {
-            self.fetchRequest.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([fetchPredicate, predicate])
+            switch (mode) {
+                case .AND:
+                    self.fetchRequest.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([fetchPredicate, predicate])
+                case .OR:
+                    self.fetchRequest.predicate = NSCompoundPredicate.orPredicateWithSubpredicates([fetchPredicate, predicate])
+            }
         } else {
             self.fetchRequest.predicate = predicate
         }
         return self
     }
     
-    public func filter(filter: (key:String,value:AnyObject)) -> Self {
+    public func filter(filter: (key:String,value:AnyObject), mode:FilterMode=FilterMode.AND) -> Self {
         let predicate = NSPredicate(format: "%K = %@", filter.key, filter.value as! NSObject)
-        return self.filter(predicate)
+        return self.filter(predicate, mode: mode)
     }
     
-    public func filter(filters: [(key:String, value:AnyObject)]) -> Self {
+    public func filter(filters: [(key:String, value:AnyObject)], mode:FilterMode=FilterMode.AND) -> Self {
         for filter in filters{
             self.filter(filter)
         }
