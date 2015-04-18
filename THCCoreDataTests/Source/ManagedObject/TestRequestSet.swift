@@ -40,4 +40,54 @@ class TestRequestSet: CoreDataTestCase {
             println(fetchedObject)
         }
     }
+
+    func testPredicateFilter() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        let predicate = NSPredicate(format:"name='test'")
+        requestSet.filter(predicate)
+        XCTAssertEqual(predicate, requestSet.fetchRequest.predicate!)
+    }
+    
+    func testChainFilter() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        let predicate1 = NSPredicate(format:"name='test1'")
+        let predicate2 = NSPredicate(format:"name='test2'")
+        requestSet.filter(predicate1).filter(predicate2)
+        XCTAssertEqual(NSPredicate(format: "name='test1' AND name='test2'"), requestSet.fetchRequest.predicate!)
+    }
+    
+    func testTupleFilter() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        requestSet.filter((key:"name", value:"Test"))
+        XCTAssertEqual(NSPredicate(format: "name='Test'"), requestSet.fetchRequest.predicate!)
+    }
+    
+    func testTupleListFilter() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        requestSet.filter([(key:"name", value:"Test"), (key:"name", value:"Test2")])
+        XCTAssertEqual(NSPredicate(format: "name='Test' AND name='Test2'"), requestSet.fetchRequest.predicate!)
+    }
+    
+//    func testChainFilter() {
+//        let context = self.manager!.mainContext
+//        let requestSet = RequestSet<StubObject>(context:context)
+//        requestSet.filter("name='Test'").filter("name='Test2'")
+//        XCTAssertEqual(NSPredicate(format: "name='Test' AND name='Test2'"), requestSet.fetchRequest.predicate!)
+//    }
+//    
+//    func testFilteredFetch() {
+//        let context = self.manager!.mainContext
+//        let requestSet = RequestSet<StubObject>(context:context)
+//        let object = context.createObject(StubObject.self)
+//        object.name="Test"
+//        let object2 = context.createObject(StubObject.self)
+//        object2.name="Test2"
+//        
+//        requestSet.filter("name='Test'")
+//        XCTAssertEqual(1, requestSet.count)
+//    }
 }

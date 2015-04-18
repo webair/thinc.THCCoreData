@@ -23,12 +23,7 @@ public class RequestSet<T:ManagedObjectEntity>: SequenceType {
         }
     }
     
-    public var fetchRequest: NSFetchRequest {
-        get{
-            let fetchRequest = self.context.fetchRequest(T)
-            return fetchRequest;
-        }
-    }
+    private(set) public var fetchRequest: NSFetchRequest
     
     public subscript(index: Int) -> T {
         get {
@@ -49,8 +44,31 @@ public class RequestSet<T:ManagedObjectEntity>: SequenceType {
         }
     }
     
+    public func filter(predicate:NSPredicate) -> Self {
+        //TODO: validate predicate
+        if let fetchPredicate = self.fetchRequest.predicate {
+            self.fetchRequest.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([fetchPredicate, predicate])
+        } else {
+            self.fetchRequest.predicate = predicate
+        }
+        return self
+    }
+    
+    public func filter(filter: (key:String,value:AnyObject)) -> Self {
+        let predicate = NSPredicate(format: "%K = %@", filter.key, filter.value as! NSObject)
+        return self.filter(predicate)
+    }
+    
+    public func filter(filters: [(key:String, value:AnyObject)]) -> Self {
+        for filter in filters{
+            self.filter(filter)
+        }
+        return self
+    }
+    
     public init(context:NSManagedObjectContext) {
         self.context = context
+        self.fetchRequest = self.context.fetchRequest(T)
     }
     
     private func fetchObjects() {
