@@ -13,7 +13,7 @@ public enum FilterMode {
     case AND,OR
 }
 
-public class RequestSet<T:ManagedObjectEntity>: SequenceType {
+public class RequestSet<T:NamedManagedObject>: SequenceType {
     
     private var objects:[NSManagedObject]?
     public var context:NSManagedObjectContext

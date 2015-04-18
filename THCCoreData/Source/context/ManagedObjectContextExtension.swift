@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-public protocol ManagedObjectEntity {
+public protocol NamedManagedObject {
     /**
     return the entity name of the managed object (will be changed to a class var, as soon this is possible in swift)
     
@@ -27,7 +27,7 @@ public extension NSManagedObjectContext {
     
     :returns: Instance of the created ManagedObject
     */
-    public func createObject<T:ManagedObjectEntity>(objectType: T.Type) -> T {
+    public func createObject<T:NamedManagedObject>(objectType: T.Type) -> T {
         return NSEntityDescription.insertNewObjectForEntityForName(objectType.entityName(), inManagedObjectContext: self) as! T
     }
     
@@ -38,7 +38,7 @@ public extension NSManagedObjectContext {
     
     :returns: Instance of a fetch request for the given obejct type
     */
-    public func fetchRequest<T:ManagedObjectEntity>(objectType: T.Type) -> NSFetchRequest {
+    public func fetchRequest<T:NamedManagedObject>(objectType: T.Type) -> NSFetchRequest {
         return NSFetchRequest(entityName: objectType.entityName())
     }
     
@@ -49,7 +49,7 @@ public extension NSManagedObjectContext {
     
     :returns: Instance of a request set for the given obejct type
     */
-    public func requestSet<T:ManagedObjectEntity>(objectType: T.Type) -> RequestSet<T> {
+    public func requestSet<T:NamedManagedObject>(objectType: T.Type) -> RequestSet<T> {
         return RequestSet<T>(context: self)
     }
     

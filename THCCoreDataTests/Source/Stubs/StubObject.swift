@@ -11,7 +11,7 @@ import CoreData
 import THCCoreData
 
 
-class StubObject: NSManagedObject, ManagedObjectEntity {
+class StubObject: NSManagedObject, NamedManagedObject {
     
     class func entityName() -> String {
         return "StubEntity"
