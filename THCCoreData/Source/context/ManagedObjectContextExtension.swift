@@ -15,7 +15,7 @@ public protocol ManagedObjectEntity {
     
     :returns: Entity name defined in the object model
     */
-    class func entityName() -> String
+    static func entityName() -> String
 }
 
 public extension NSManagedObjectContext {
@@ -28,9 +28,16 @@ public extension NSManagedObjectContext {
     :returns: Instance of the created ManagedObject
     */
     public func createObject<T:ManagedObjectEntity>(objectType: T.Type) -> T {
-        return NSEntityDescription.insertNewObjectForEntityForName(objectType.entityName(), inManagedObjectContext: self) as T
+        return NSEntityDescription.insertNewObjectForEntityForName(objectType.entityName(), inManagedObjectContext: self) as! T
     }
     
+    /**
+    Creates a fetch request for the given ManagedObject class
+    
+    :param: objectType Type of the managed object
+    
+    :returns: Instance of a fetch request for the given obejct type
+    */
     public func fetchRequest<T:ManagedObjectEntity>(objectType: T.Type) -> NSFetchRequest {
         return NSFetchRequest(entityName: objectType.entityName())
     }

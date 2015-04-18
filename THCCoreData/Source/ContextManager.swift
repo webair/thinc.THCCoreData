@@ -19,7 +19,7 @@ public struct CoreDataConfiguration {
     
     /// The default configuration
     public static var defaultConfiguration: CoreDataConfiguration {get{
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as NSURL
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
         let rootFolder = documentsDir.URLByAppendingPathComponent("THCCoreData")
         var error: NSError?
         NSFileManager.defaultManager().createDirectoryAtURL(rootFolder, withIntermediateDirectories: true, attributes: nil, error: &error)

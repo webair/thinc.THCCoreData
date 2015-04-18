@@ -17,7 +17,7 @@ class TestCoreDataConfiguration: XCTestCase {
         CoreDataConfiguration.defaultManagedObjectModel = objectModel
         CoreDataConfiguration.defaultStoreName = "Test.sqlite"
         let defaultConfig = CoreDataConfiguration.defaultConfiguration
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as NSURL
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
         let storeURL = documentsDir.URLByAppendingPathComponent("THCCoreData").URLByAppendingPathComponent("Test.sqlite")
         
         XCTAssertEqual(storeURL, defaultConfig.storeURL)
@@ -38,13 +38,13 @@ class TestContextManager: XCTestCase {
     }
     
     func testInitializeWithConfiguration() {
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as NSURL
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
         let storeURL = documentsDir.URLByAppendingPathComponent("CoreData.sqlite")
         let objectModel = NSManagedObjectModel()
         let config = CoreDataConfiguration(storeURL: storeURL, managedObjectModel: objectModel)
         let manager = ContextManager(configuration: config)
         XCTAssertEqual(objectModel, manager.mainContext.persistentStoreCoordinator!.managedObjectModel)
-        let persitentStore = manager.mainContext.persistentStoreCoordinator!.persistentStores[0] as NSPersistentStore
+        let persitentStore = manager.mainContext.persistentStoreCoordinator!.persistentStores[0] as! NSPersistentStore
         XCTAssertEqual(storeURL, persitentStore.URL!)
     }
     

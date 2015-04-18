@@ -1,8 +1,8 @@
 //
-//  TestManagedObjectContext.swift
+//  CoreDataTestCase.swift
 //  THCCoreData
 //
-//  Created by Christopher weber on 06.04.15.
+//  Created by Christopher weber on 17.04.15.
 //  Copyright (c) 2015 Thinc. All rights reserved.
 //
 
@@ -11,8 +11,8 @@ import XCTest
 import THCCoreData
 import CoreData
 
-class TestManagedObjectContext: XCTestCase {
-    
+class CoreDataTestCase: XCTestCase {
+
     var manager: ContextManager?
     
     override func setUp() {
@@ -22,16 +22,5 @@ class TestManagedObjectContext: XCTestCase {
         coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)
         self.manager = ContextManager(persistanceStoreCoordinator: coordinator)
     }
-    
-    func testFetchRequest() {
-        let context = self.manager!.mainContext
-        let fetchRequest = context.fetchRequest(StubObject.self)
-        XCTAssertEqual(StubObject.entityName(), fetchRequest.entityName!)
-    }
-    
-    func testCreateObject() {
-        let context = self.manager!.mainContext
-        let stub: StubObject = context.createObject(StubObject.self)
-        XCTAssertNotNil(stub)
-    }
+
 }
