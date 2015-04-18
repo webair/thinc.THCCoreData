@@ -85,6 +85,20 @@ public class RequestSet<T:ManagedObjectEntity>: SequenceType {
         self.fetchRequest = self.context.fetchRequest(T)
     }
     
+    public func sortBy(key:String, ascending: Bool=true) -> Self {
+        self.fetchRequest.sortDescriptors = [NSSortDescriptor(key:key, ascending: ascending)]
+        return self
+    }
+    
+    public func sortBy(sorts:[(key:String, ascending: Bool)]) -> Self {
+        var sortDescriptors: [NSSortDescriptor] = []
+        for sort in sorts {
+            sortDescriptors.append(NSSortDescriptor(key:sort.key, ascending: sort.ascending))
+        }
+        self.fetchRequest.sortDescriptors = sortDescriptors
+        return self
+    }
+    
     private func fetchObjects() {
         if self.objects == nil {
             var error:NSError?

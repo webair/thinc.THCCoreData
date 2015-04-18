@@ -16,7 +16,7 @@ class CoreDataTestCase: XCTestCase {
     var manager: ContextManager?
     
     override func setUp() {
-        let objectModelURL = NSBundle(forClass: TestManagedObjectContext.self).URLForResource("Model", withExtension: "momd")!
+        let objectModelURL = NSBundle(forClass: CoreDataTestCase.self).URLForResource("Model", withExtension: "momd")!
         let objectModel = NSManagedObjectModel(contentsOfURL: objectModelURL)!
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
         coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)

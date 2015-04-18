@@ -10,12 +10,10 @@
 		030BF6AB1AD3080800F804C5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 030BF6A91AD3080800F804C5 /* Model.xcdatamodeld */; };
 		03756BB81AE11EA400B4AA20 /* ManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB31AE11EA400B4AA20 /* ManagedObjectContextExtension.swift */; };
 		03756BB91AE11EA400B4AA20 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB41AE11EA400B4AA20 /* ContextManager.swift */; };
-		03756BBA1AE11EA400B4AA20 /* ManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB61AE11EA400B4AA20 /* ManagedObjectExtension.swift */; };
 		03756BBB1AE11EA400B4AA20 /* RequestSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB71AE11EA400B4AA20 /* RequestSet.swift */; };
 		03756BC31AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BBE1AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift */; };
 		03756BC41AE11EB000B4AA20 /* StubObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BC11AE11EB000B4AA20 /* StubObject.swift */; };
 		03756BC51AE11EB000B4AA20 /* TestContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BC21AE11EB000B4AA20 /* TestContextManager.swift */; };
-		03756BC71AE11F1100B4AA20 /* TestManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BC61AE11F1100B4AA20 /* TestManagedObjectContext.swift */; };
 		03756BC91AE120A900B4AA20 /* TestRequestSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BC81AE120A900B4AA20 /* TestRequestSet.swift */; };
 		03756BCC1AE121A900B4AA20 /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BCB1AE121A900B4AA20 /* CoreDataTestCase.swift */; };
 		03CE355C1AD2A6E30082AB52 /* THCCoreData.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CE355B1AD2A6E30082AB52 /* THCCoreData.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -28,12 +26,10 @@
 		030BF6B41AD31E1C00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		03756BB31AE11EA400B4AA20 /* ManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		03756BB41AE11EA400B4AA20 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
-		03756BB61AE11EA400B4AA20 /* ManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectExtension.swift; sourceTree = "<group>"; };
 		03756BB71AE11EA400B4AA20 /* RequestSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestSet.swift; sourceTree = "<group>"; };
 		03756BBE1AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		03756BC11AE11EB000B4AA20 /* StubObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubObject.swift; sourceTree = "<group>"; };
 		03756BC21AE11EB000B4AA20 /* TestContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestContextManager.swift; sourceTree = "<group>"; };
-		03756BC61AE11F1100B4AA20 /* TestManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestManagedObjectContext.swift; sourceTree = "<group>"; };
 		03756BC81AE120A900B4AA20 /* TestRequestSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestSet.swift; sourceTree = "<group>"; };
 		03756BCB1AE121A900B4AA20 /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		03A11DB01AD3257100D87610 /* Pods_THCCoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_THCCoreData.framework; path = "Pods/../build/Debug-iphoneos/Pods_THCCoreData.framework"; sourceTree = "<group>"; };
@@ -98,7 +94,6 @@
 		03756BB51AE11EA400B4AA20 /* ManagedObject */ = {
 			isa = PBXGroup;
 			children = (
-				03756BB61AE11EA400B4AA20 /* ManagedObjectExtension.swift */,
 				03756BB71AE11EA400B4AA20 /* RequestSet.swift */,
 			);
 			path = ManagedObject;
@@ -127,7 +122,6 @@
 		03756BBF1AE11EB000B4AA20 /* ManagedObject */ = {
 			isa = PBXGroup;
 			children = (
-				03756BC61AE11F1100B4AA20 /* TestManagedObjectContext.swift */,
 				03756BC81AE120A900B4AA20 /* TestRequestSet.swift */,
 			);
 			path = ManagedObject;
@@ -335,7 +329,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03756BBB1AE11EA400B4AA20 /* RequestSet.swift in Sources */,
-				03756BBA1AE11EA400B4AA20 /* ManagedObjectExtension.swift in Sources */,
 				03756BB81AE11EA400B4AA20 /* ManagedObjectContextExtension.swift in Sources */,
 				03756BB91AE11EA400B4AA20 /* ContextManager.swift in Sources */,
 			);
@@ -348,7 +341,6 @@
 				03756BC91AE120A900B4AA20 /* TestRequestSet.swift in Sources */,
 				03756BC31AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift in Sources */,
 				030BF6AB1AD3080800F804C5 /* Model.xcdatamodeld in Sources */,
-				03756BC71AE11F1100B4AA20 /* TestManagedObjectContext.swift in Sources */,
 				03756BC41AE11EB000B4AA20 /* StubObject.swift in Sources */,
 				03756BCC1AE121A900B4AA20 /* CoreDataTestCase.swift in Sources */,
 				03756BC51AE11EB000B4AA20 /* TestContextManager.swift in Sources */,

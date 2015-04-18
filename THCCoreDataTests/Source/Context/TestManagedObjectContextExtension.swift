@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 import CoreData
+import THCCoreData
 
 class TestManagedObjectContextExtension: CoreDataTestCase {
     
@@ -22,5 +23,11 @@ class TestManagedObjectContextExtension: CoreDataTestCase {
         let context = self.manager!.mainContext
         let stub: StubObject = context.createObject(StubObject.self)
         XCTAssertNotNil(stub)
+    }
+    
+    func testRequestSet() {
+        let context = self.manager!.mainContext
+        let requestSet = context.requestSet(StubObject.self)
+        XCTAssertNotNil(requestSet)
     }
 }

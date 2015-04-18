@@ -90,4 +90,29 @@ class TestRequestSet: CoreDataTestCase {
         requestSet.limit(1)
         XCTAssertEqual(1, requestSet.count)
     }
+    
+    func testSorting() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        requestSet.sortBy("name")
+        XCTAssertEqual(1, requestSet.fetchRequest.sortDescriptors!.count)
+        XCTAssertEqual("name", requestSet.fetchRequest.sortDescriptors![0].key!!)
+        XCTAssertEqual(true, requestSet.fetchRequest.sortDescriptors![0].ascending)
+        
+        requestSet.sortBy("name2", ascending:false)
+        XCTAssertEqual(1, requestSet.fetchRequest.sortDescriptors!.count)
+        XCTAssertEqual("name2", requestSet.fetchRequest.sortDescriptors![0].key!!)
+        XCTAssertEqual(false, requestSet.fetchRequest.sortDescriptors![0].ascending)
+    }
+    
+    func testSortingList() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        requestSet.sortBy([("name", ascending:true), ("name2", ascending:false)])
+        XCTAssertEqual(2, requestSet.fetchRequest.sortDescriptors!.count)
+        XCTAssertEqual("name", requestSet.fetchRequest.sortDescriptors![0].key!!)
+        XCTAssertEqual(true, requestSet.fetchRequest.sortDescriptors![0].ascending)
+        XCTAssertEqual("name2", requestSet.fetchRequest.sortDescriptors![1].key!!)
+        XCTAssertEqual(false, requestSet.fetchRequest.sortDescriptors![1].ascending)
+    }
 }

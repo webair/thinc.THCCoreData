@@ -42,4 +42,15 @@ public extension NSManagedObjectContext {
         return NSFetchRequest(entityName: objectType.entityName())
     }
     
+    /**
+    Creates a request set for the given ManagedObject class
+    
+    :param: objectType Type of the managed object
+    
+    :returns: Instance of a request set for the given obejct type
+    */
+    public func requestSet<T:ManagedObjectEntity>(objectType: T.Type) -> RequestSet<T> {
+        return RequestSet<T>(context: self)
+    }
+    
 }
