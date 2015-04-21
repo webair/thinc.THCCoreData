@@ -30,4 +30,17 @@ class TestManagedObjectContextExtension: CoreDataTestCase {
         let requestSet = context.requestSet(StubObject.self)
         XCTAssertNotNil(requestSet)
     }
+    
+    func testPersist() {
+        let context = self.manager!.mainContext
+        let obj = context.createObject(StubObject)
+        obj.name = "test"
+        let expectation = self.expectationWithDescription("Called success")
+        context.persist({(success:Bool, error:NSError?) -> Void in
+            XCTAssertTrue(success)
+            expectation.fulfill()
+        })
+        self.waitForExpectationsWithTimeout(0.1, handler: nil)
+        XCTAssertEqual(1, self.manager!.mainContext.parentContext!.countForFetchRequest(context.fetchRequest(StubObject), error: nil))
+    }
 }

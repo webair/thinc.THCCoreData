@@ -52,5 +52,24 @@ public extension NSManagedObjectContext {
     public func requestSet<T:NamedManagedObject>(objectType: T.Type) -> RequestSet<T> {
         return RequestSet<T>(context: self)
     }
+    /**
+    Persists context, will invoke parent contexts if any
+    
+    :param: success success closure
+    */
+    public func persist(completion: (success:Bool, error:NSError?) -> (Void)) {
+        self.performBlock({
+            var error: NSError?
+            if self.save(&error) {
+                if let parentContext = self.parentContext {
+                    parentContext.persist(completion)
+                } else {
+                    completion(success: true, error: error)
+                }
+            } else {
+                completion(success: false, error: error)
+            }
+        })
+    }
     
 }

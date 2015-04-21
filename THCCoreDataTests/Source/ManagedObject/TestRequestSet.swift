@@ -58,18 +58,20 @@ class TestRequestSet: CoreDataTestCase {
         XCTAssertEqual(NSPredicate(format: "name='test1' AND name='test2'"), requestSet.fetchRequest.predicate!)
     }
     
-    func testTupleFilter() {
+    func testFilter() {
         let context = self.manager!.mainContext
         let requestSet = RequestSet<StubObject>(context:context)
-        requestSet.filter((key:"name", value:"Test"))
-        XCTAssertEqual(NSPredicate(format: "name='Test'"), requestSet.fetchRequest.predicate!)
+        requestSet.filter("name", value:"Test")
+        XCTAssertEqual(NSPredicate(format: "name = 'Test'"), requestSet.fetchRequest.predicate!)
     }
+    
+
     
     func testTupleListFilter() {
         let context = self.manager!.mainContext
         let requestSet = RequestSet<StubObject>(context:context)
         requestSet.filter([(key:"name", value:"Test"), (key:"name", value:"Test2")])
-        XCTAssertEqual(NSPredicate(format: "name='Test' AND name='Test2'"), requestSet.fetchRequest.predicate!)
+        XCTAssertEqual(NSPredicate(format: "name = 'Test' AND name = 'Test2'"), requestSet.fetchRequest.predicate!)
     }
     
     func testORFilter() {
