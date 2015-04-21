@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		030BF6AB1AD3080800F804C5 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 030BF6A91AD3080800F804C5 /* Model.xcdatamodeld */; };
-		03756BB81AE11EA400B4AA20 /* ManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB31AE11EA400B4AA20 /* ManagedObjectContextExtension.swift */; };
-		03756BB91AE11EA400B4AA20 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB41AE11EA400B4AA20 /* ContextManager.swift */; };
-		03756BBB1AE11EA400B4AA20 /* RequestSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BB71AE11EA400B4AA20 /* RequestSet.swift */; };
+		034432C21AE6CAAF0005A807 /* ManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034432BE1AE6CAAF0005A807 /* ManagedObjectContextExtension.swift */; };
+		034432C31AE6CAAF0005A807 /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034432BF1AE6CAAF0005A807 /* ContextManager.swift */; };
+		034432C41AE6CAAF0005A807 /* RequestSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034432C11AE6CAAF0005A807 /* RequestSet.swift */; };
 		03756BC31AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BBE1AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift */; };
 		03756BC41AE11EB000B4AA20 /* StubObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BC11AE11EB000B4AA20 /* StubObject.swift */; };
 		03756BC51AE11EB000B4AA20 /* TestContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03756BC21AE11EB000B4AA20 /* TestContextManager.swift */; };
@@ -24,9 +24,9 @@
 		030BF6AA1AD3080800F804C5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		030BF6B21AD31DEB00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		030BF6B41AD31E1C00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
-		03756BB31AE11EA400B4AA20 /* ManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectContextExtension.swift; sourceTree = "<group>"; };
-		03756BB41AE11EA400B4AA20 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
-		03756BB71AE11EA400B4AA20 /* RequestSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestSet.swift; sourceTree = "<group>"; };
+		034432BE1AE6CAAF0005A807 /* ManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectContextExtension.swift; sourceTree = "<group>"; };
+		034432BF1AE6CAAF0005A807 /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
+		034432C11AE6CAAF0005A807 /* RequestSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestSet.swift; sourceTree = "<group>"; };
 		03756BBE1AE11EB000B4AA20 /* TestManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		03756BC11AE11EB000B4AA20 /* StubObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StubObject.swift; sourceTree = "<group>"; };
 		03756BC21AE11EB000B4AA20 /* TestContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestContextManager.swift; sourceTree = "<group>"; };
@@ -73,28 +73,28 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		03756BB11AE11EA400B4AA20 /* Source */ = {
+		034432BC1AE6CAAF0005A807 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				03756BB21AE11EA400B4AA20 /* Context */,
-				03756BB41AE11EA400B4AA20 /* ContextManager.swift */,
-				03756BB51AE11EA400B4AA20 /* ManagedObject */,
+				034432BD1AE6CAAF0005A807 /* Context */,
+				034432BF1AE6CAAF0005A807 /* ContextManager.swift */,
+				034432C01AE6CAAF0005A807 /* ManagedObject */,
 			);
-			path = Source;
+			path = Classes;
 			sourceTree = "<group>";
 		};
-		03756BB21AE11EA400B4AA20 /* Context */ = {
+		034432BD1AE6CAAF0005A807 /* Context */ = {
 			isa = PBXGroup;
 			children = (
-				03756BB31AE11EA400B4AA20 /* ManagedObjectContextExtension.swift */,
+				034432BE1AE6CAAF0005A807 /* ManagedObjectContextExtension.swift */,
 			);
 			path = Context;
 			sourceTree = "<group>";
 		};
-		03756BB51AE11EA400B4AA20 /* ManagedObject */ = {
+		034432C01AE6CAAF0005A807 /* ManagedObject */ = {
 			isa = PBXGroup;
 			children = (
-				03756BB71AE11EA400B4AA20 /* RequestSet.swift */,
+				034432C11AE6CAAF0005A807 /* RequestSet.swift */,
 			);
 			path = ManagedObject;
 			sourceTree = "<group>";
@@ -166,7 +166,7 @@
 		03CE35581AD2A6E30082AB52 /* THCCoreData */ = {
 			isa = PBXGroup;
 			children = (
-				03756BB11AE11EA400B4AA20 /* Source */,
+				034432BC1AE6CAAF0005A807 /* Classes */,
 				03CE355B1AD2A6E30082AB52 /* THCCoreData.h */,
 				03CE35591AD2A6E30082AB52 /* Supporting Files */,
 			);
@@ -328,9 +328,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03756BBB1AE11EA400B4AA20 /* RequestSet.swift in Sources */,
-				03756BB81AE11EA400B4AA20 /* ManagedObjectContextExtension.swift in Sources */,
-				03756BB91AE11EA400B4AA20 /* ContextManager.swift in Sources */,
+				034432C21AE6CAAF0005A807 /* ManagedObjectContextExtension.swift in Sources */,
+				034432C31AE6CAAF0005A807 /* ContextManager.swift in Sources */,
+				034432C41AE6CAAF0005A807 /* RequestSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
