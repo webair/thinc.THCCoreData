@@ -11,7 +11,11 @@ import CoreData
 */
 public struct CoreDataConfiguration {
     
-    public static let configurationFolder = "THCCoreData"
+    /// Base Folder, where the stores and configuration will be saved
+    public static let baseFolder: NSURL = {
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+        return documentsDir.URLByAppendingPathComponent("THCCoreData")
+    }()
     
     /// Name of the sqlite store which will be used for the default configuration (defaul: CoreData.sqlite)
     public static var defaultStoreName = "CoreData.sqlite"
@@ -21,20 +25,19 @@ public struct CoreDataConfiguration {
     
     /// The default configuration
     public static var defaultConfiguration: CoreDataConfiguration {get{
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
-        let rootFolder = documentsDir.URLByAppendingPathComponent(self.configurationFolder)
         var error: NSError?
-        NSFileManager.defaultManager().createDirectoryAtURL(rootFolder, withIntermediateDirectories: true, attributes: nil, error: &error)
-        if error != nil {
+        let fileManager = NSFileManager.defaultManager()
+        if !fileManager.createDirectoryAtURL(CoreDataConfiguration.baseFolder, withIntermediateDirectories: true, attributes: nil, error:&error) {
             NSException(name: "Exception", reason: "can't create folder in documents", userInfo: nil).raise()
         }
+        
         var managedObjectModel: NSManagedObjectModel?
         if CoreDataConfiguration.defaultManagedObjectModel != nil {
             managedObjectModel = defaultManagedObjectModel
         } else {
             managedObjectModel = NSManagedObjectModel.mergedModelFromBundles([NSBundle.mainBundle()])!;
         }
-        return CoreDataConfiguration(storeURL: rootFolder.URLByAppendingPathComponent(defaultStoreName), managedObjectModel:managedObjectModel!)
+        return CoreDataConfiguration(storeURL: CoreDataConfiguration.baseFolder.URLByAppendingPathComponent(defaultStoreName), managedObjectModel:managedObjectModel!)
         }
     }
     
@@ -58,14 +61,18 @@ public struct CoreDataConfiguration {
     public var managedObjectModel: NSManagedObjectModel
     
     /**
-    *  Deletes the base folder for the configuration
-    *
-    *  @return True if success
+    Deletes the underlaying store
     */
-    public func resetStore() -> Bool {
+    public func deleteStore() {
         let fileManager = NSFileManager.defaultManager()
-        let configurationFolder = self.storeURL.URLByDeletingLastPathComponent!
-        return fileManager.removeItemAtURL(configurationFolder, error: nil)
+        
+        let rawURL = self.storeURL.absoluteString!
+        let shmURL = NSURL(string: rawURL.stringByAppendingString("-shm"))!
+        let walURL = NSURL(string: rawURL.stringByAppendingString("-wal"))!
+
+        fileManager.removeItemAtURL(self.storeURL, error: nil)
+        fileManager.removeItemAtURL(shmURL, error: nil)
+        fileManager.removeItemAtURL(walURL, error: nil)
     }
     
 }
@@ -74,7 +81,6 @@ public struct CoreDataConfiguration {
 *  Manages the NSManagedObjectContext instances. It sets up an efficient Core Data stack with support for creating multiple child managed object contexts. It has a built-in private managed object context that does asynchronous saving to an SQLite Store
 */
 public class ContextManager {
-    
     
     private let writerContext: NSManagedObjectContext
     
@@ -90,17 +96,9 @@ public class ContextManager {
     }
     
     /// The default ContextManager created by the default CoreDataConfiguration instance @see CoreDataConfiguration
-    public class var defaultManager: ContextManager {
-        struct Static {
-            static var instance: ContextManager?
-            static var token: dispatch_once_t = 0
-        }
-        dispatch_once(&Static.token) {
-            
-            Static.instance = ContextManager(configuration: CoreDataConfiguration.defaultConfiguration)
-        }
-        return Static.instance!
-    }
+    public static let defaultManager: ContextManager = {
+        return ContextManager(configuration: CoreDataConfiguration.defaultConfiguration)
+    }()
     
     /**
     Creates a instance
@@ -113,23 +111,23 @@ public class ContextManager {
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: configuration.managedObjectModel)
         let options = [NSMigratePersistentStoresAutomaticallyOption : true,NSInferMappingModelAutomaticallyOption : true]
         var error: NSError?
-        persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: configuration.storeURL, options: options, error: &error)
-        if error != nil {
-            NSException(name: "Exception", reason: "can't create sqliteStore at URL \(configuration.storeURL)", userInfo: nil).raise()
+        var store: NSPersistentStore? = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: configuration.storeURL, options: options, error: &error)
+        if store == nil {
+            println("Could not create store: \(error)")
         }
-        self.init(persistanceStoreCoordinator: persistentStoreCoordinator)
+        self.init(persistentStoreCoordinator: persistentStoreCoordinator)
     }
 
     /**
     Creates a instance of ContextManager
     
-    :param: persistanceStoreCoordinator NSPersistentStoreCoordinator which will be used by the manager to create the NSMAnagedObjectContext instances
+    :param: persistentStoreCoordinator NSPersistentStoreCoordinator which will be used by the manager to create the NSMAnagedObjectContext instances
     
     :returns: Instance of ContextManager
     */
-    public init(persistanceStoreCoordinator: NSPersistentStoreCoordinator) {
+    public init(persistentStoreCoordinator: NSPersistentStoreCoordinator) {
         self.writerContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
-        self.writerContext.persistentStoreCoordinator = persistanceStoreCoordinator
+        self.writerContext.persistentStoreCoordinator = persistentStoreCoordinator
         self.mainContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
         self.mainContext.parentContext = self.writerContext
     }

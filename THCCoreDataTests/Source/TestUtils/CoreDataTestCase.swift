@@ -20,7 +20,7 @@ class CoreDataTestCase: XCTestCase {
         let objectModel = NSManagedObjectModel(contentsOfURL: objectModelURL)!
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
         coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)
-        self.manager = ContextManager(persistanceStoreCoordinator: coordinator)
+        self.manager = ContextManager(persistentStoreCoordinator: coordinator)
     }
 
 }

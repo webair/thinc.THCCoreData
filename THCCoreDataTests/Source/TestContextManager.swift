@@ -29,12 +29,23 @@ class TestCoreDataConfiguration: XCTestCase {
         CoreDataConfiguration.defaultManagedObjectModel = objectModel
         CoreDataConfiguration.defaultStoreName = "Test.sqlite"
         let defaultConfig = CoreDataConfiguration.defaultConfiguration
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
-        let configurationPath = documentsDir.URLByAppendingPathComponent(CoreDataConfiguration.configurationFolder)
-        let context = ContextManager.defaultManager.mainContext
-        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(configurationPath.path!))
-        defaultConfig.resetStore()
-        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(configurationPath.path!))
+        // create store
+        let manager = ContextManager.defaultManager
+        
+        let sqliteURL = CoreDataConfiguration.baseFolder.URLByAppendingPathComponent("Test.sqlite")
+        
+        
+        let rawURL = sqliteURL.absoluteString!
+        let shmURL = NSURL(string: rawURL.stringByAppendingString("-shm"))!
+        let walURL = NSURL(string: rawURL.stringByAppendingString("-wal"))!
+        
+        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(sqliteURL.path!))
+        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(shmURL.path!))
+        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(walURL.path!))
+        defaultConfig.deleteStore()
+        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(sqliteURL.path!))
+        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(shmURL.path!))
+        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(walURL.path!))
     }
 }
 
@@ -43,7 +54,7 @@ class TestContextManager: XCTestCase {
     func testInitializeContextManager() {
         let objectModel = NSManagedObjectModel()
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
-        let manager = ContextManager(persistanceStoreCoordinator: coordinator)
+        let manager = ContextManager(persistentStoreCoordinator: coordinator)
         XCTAssertNotNil(manager.mainContext)
         XCTAssertEqual(NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType, manager.mainContext.concurrencyType)
         XCTAssertNotNil(manager.mainContext.parentContext)
@@ -64,7 +75,7 @@ class TestContextManager: XCTestCase {
     func testPrivateContext() {
         let objectModel = NSManagedObjectModel()
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
-        let manager = ContextManager(persistanceStoreCoordinator: coordinator)
+        let manager = ContextManager(persistentStoreCoordinator: coordinator)
         let privateContext = manager.privateContext
         XCTAssertEqual(manager.mainContext, privateContext.parentContext!)
         XCTAssertEqual(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType, privateContext.concurrencyType)
