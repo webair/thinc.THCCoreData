@@ -23,6 +23,19 @@ class TestCoreDataConfiguration: XCTestCase {
         XCTAssertEqual(storeURL, defaultConfig.storeURL)
         XCTAssertEqual(objectModel, defaultConfig.managedObjectModel)
     }
+    
+    func testReset() {
+        let objectModel = NSManagedObjectModel()
+        CoreDataConfiguration.defaultManagedObjectModel = objectModel
+        CoreDataConfiguration.defaultStoreName = "Test.sqlite"
+        let defaultConfig = CoreDataConfiguration.defaultConfiguration
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+        let configurationPath = documentsDir.URLByAppendingPathComponent(CoreDataConfiguration.configurationFolder)
+        let context = ContextManager.defaultManager.mainContext
+        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(configurationPath.path!))
+        defaultConfig.resetStore()
+        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(configurationPath.path!))
+    }
 }
 
 class TestContextManager: XCTestCase {

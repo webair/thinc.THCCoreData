@@ -11,6 +11,8 @@ import CoreData
 */
 public struct CoreDataConfiguration {
     
+    public static let configurationFolder = "THCCoreData"
+    
     /// Name of the sqlite store which will be used for the default configuration (defaul: CoreData.sqlite)
     public static var defaultStoreName = "CoreData.sqlite"
     
@@ -20,7 +22,7 @@ public struct CoreDataConfiguration {
     /// The default configuration
     public static var defaultConfiguration: CoreDataConfiguration {get{
         let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
-        let rootFolder = documentsDir.URLByAppendingPathComponent("THCCoreData")
+        let rootFolder = documentsDir.URLByAppendingPathComponent(self.configurationFolder)
         var error: NSError?
         NSFileManager.defaultManager().createDirectoryAtURL(rootFolder, withIntermediateDirectories: true, attributes: nil, error: &error)
         if error != nil {
@@ -50,10 +52,21 @@ public struct CoreDataConfiguration {
     }
     
     /// URL of the sqlite store
-    public var storeURL: NSURL
+    private(set) public var storeURL: NSURL
     
     /// The NS;anagedObject model
     public var managedObjectModel: NSManagedObjectModel
+    
+    /**
+    *  Deletes the base folder for the configuration
+    *
+    *  @return True if success
+    */
+    public func resetStore() -> Bool {
+        let fileManager = NSFileManager.defaultManager()
+        let configurationFolder = self.storeURL.URLByDeletingLastPathComponent!
+        return fileManager.removeItemAtURL(configurationFolder, error: nil)
+    }
     
 }
 
