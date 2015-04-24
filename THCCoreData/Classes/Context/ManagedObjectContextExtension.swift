@@ -58,7 +58,8 @@ public extension NSManagedObjectContext {
     :param: success success closure
     */
     public func persist(completion: ((success:Bool, error:NSError?) -> Void)?) {
-        self.performBlock({
+        
+        let persistClosure: () -> () = {
             var error: NSError?
             if self.save(&error) {
                 if let parentContext = self.parentContext {
@@ -69,7 +70,15 @@ public extension NSManagedObjectContext {
             } else {
                 completion?(success: false, error: error)
             }
-        })
+        }
+        
+        if (self.parentContext != nil) {
+            self.performBlockAndWait(persistClosure)
+        } else {
+            self.performBlock(persistClosure)
+        }
+        
+        
     }
     
 }
