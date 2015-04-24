@@ -57,7 +57,7 @@ public struct CoreDataConfiguration {
     /// URL of the sqlite store
     private(set) public var storeURL: NSURL
     
-    /// The NS;anagedObject model
+    /// The NSManagedObject model
     public var managedObjectModel: NSManagedObjectModel
     
     /**
