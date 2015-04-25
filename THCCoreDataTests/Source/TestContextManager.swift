@@ -45,7 +45,7 @@ class TestContextManager: XCTestCase {
         let objectModel = NSManagedObjectModel()
         let storeURL = self.defaultStoreURL()
         
-        var manager = ContextManager(objectModel: objectModel)
+        var manager = ContextManager(managedObjectModel: objectModel)
         var store = manager.mainContext.persistentStoreCoordinator!.persistentStoreForURL(storeURL)
         
         XCTAssertNotNil(store)

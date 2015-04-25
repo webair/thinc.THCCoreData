@@ -15,8 +15,17 @@ Filer mode used for the filter function
 - AND: AND filter
 - OR:  OR filter
 */
-public enum FilterMode {
+public enum RequestFilterMode {
     case AND,OR
+}
+/**
+Sort order used for the sortBy function
+
+- ASCENDING:  sort ascending
+- DESCENDING: sort desending
+*/
+public enum RequestSortOrder {
+    case ASCENDING,DESCENDING
 }
 
 /**
@@ -79,7 +88,7 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
     
     :returns: Instance of requestSet, used for chaining
     */
-    public func filter(predicate:NSPredicate, mode:FilterMode=FilterMode.AND) -> Self {
+    public func filter(predicate:NSPredicate, mode:RequestFilterMode=RequestFilterMode.AND) -> Self {
         //TODO: validate predicate
         if let fetchPredicate = self.fetchRequest.predicate {
             switch (mode) {
@@ -103,7 +112,7 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
     
     :returns: Instance of requestSet, used for chaining
     */
-    public func filter(key:String, value:AnyObject, mode:FilterMode=FilterMode.AND) -> Self {
+    public func filter(key:String, value:AnyObject, mode:RequestFilterMode=RequestFilterMode.AND) -> Self {
         let predicate = NSPredicate(format: "%K = %@", key, value as! NSObject)
         return self.filter(predicate, mode: mode)
     }
@@ -116,7 +125,7 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
     
     :returns: Instance of requestSet, used for chaining
     */
-    public func filter(filters: [(key:String, value:AnyObject)], mode:FilterMode=FilterMode.AND) -> Self {
+    public func filter(filters: [(key:String, value:AnyObject)], mode:RequestFilterMode=RequestFilterMode.AND) -> Self {
         for filter in filters{
             self.filter(filter.key, value: filter.value)
         }
@@ -135,10 +144,25 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
         return self
     }
     
+//    /**
+//    Sets the offset fot the requestSet
+//    
+//    **Warning:** The offset only works with persisted data,
+//    
+//    :param: offset sets the offset of the requestSet, must be greater than 0
+//    */
+//    public func offset(offset:Int) -> Self {
+//        assert(offset > 0, "invalid offset '\(offset)' must be greater than 0")
+//        // TODO think of fixing the limitation with the offset, but think about the impact with
+//        // fetched results controller
+//        self.fetchRequest.fetchOffset = offset
+//        return self
+//    }
+    
     /**
     Default initializer
     
-    :param: context manage context used for request objects
+    :param: context managed context used for request objects
     
     :returns: Instance of RequestSet
     */
@@ -148,14 +172,15 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
     }
     
     /**
-    Sets the sort descriptors
+    Sets the sort descriptors for the request set
     
-    :param: key       key to sort
-    :param: ascending True if sort is ascending (default: True)
+    :param: key   key to sort by
+    :param: order defines the sort order (default: RequestSortOrder.ASCENDING)
     
-    :returns: Instance of requestSet, used for chaining
+    :returns: Instance of requestSet, used for chaini
     */
-    public func sortBy(key:String, ascending: Bool=true) -> Self {
+    public func sortBy(key:String, order:RequestSortOrder = RequestSortOrder.ASCENDING) -> Self {
+        let ascending = order == RequestSortOrder.ASCENDING
         self.fetchRequest.sortDescriptors = [NSSortDescriptor(key:key, ascending: ascending)]
         return self
     }
@@ -167,10 +192,11 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
     
     :returns:  Instance of requestSet, used for chaining
     */
-    public func sortBy(sorts:[(key:String, ascending: Bool)]) -> Self {
+    public func sortBy(sorts:[(key:String, order:RequestSortOrder)]) -> Self {
         var sortDescriptors: [NSSortDescriptor] = []
         for sort in sorts {
-            sortDescriptors.append(NSSortDescriptor(key:sort.key, ascending: sort.ascending))
+            let ascending = sort.order == RequestSortOrder.ASCENDING
+            sortDescriptors.append(NSSortDescriptor(key:sort.key, ascending:ascending))
         }
         self.fetchRequest.sortDescriptors = sortDescriptors
         return self

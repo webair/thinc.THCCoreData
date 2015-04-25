@@ -41,7 +41,7 @@ public class ContextManager {
     /**
     Creates a isntance of ContextManager bases on a object model with a sqlite store. The store will be located in documents directory under 'THCCoreData/'
     */
-    convenience public init(objectModel: NSManagedObjectModel) {
+    convenience public init(managedObjectModel: NSManagedObjectModel) {
         // TODO: change to optional initializer and remove exception as soon this bug is fixed:
         // http://stackoverflow.com/questions/26495586/best-practice-to-implement-a-failable-initializer-in-swift
         
@@ -52,7 +52,7 @@ public class ContextManager {
         if !fileManager.createDirectoryAtURL(sqliteStoreURL.URLByDeletingLastPathComponent!, withIntermediateDirectories: true, attributes: nil, error:&error) {
             NSException(name: "Exception", reason: "can't create folder in documents", userInfo: nil).raise()
         }
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
+        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         let options = [
             NSMigratePersistentStoresAutomaticallyOption : true,
             NSInferMappingModelAutomaticallyOption : true
@@ -75,6 +75,6 @@ public class ContextManager {
         if (managedObjectModel == nil) {
             NSException(name: "Exception", reason: "Could not create managedobject model", userInfo: nil).raise()
         }
-        self.init(objectModel: managedObjectModel!)
+        self.init(managedObjectModel: managedObjectModel!)
     }
 }
