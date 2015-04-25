@@ -11,45 +11,25 @@ import XCTest
 import THCCoreData
 import CoreData
 
-class TestCoreDataConfiguration: XCTestCase {
-    func testDefaultConfiguration() {
-        let objectModel = NSManagedObjectModel()
-        CoreDataConfiguration.defaultManagedObjectModel = objectModel
-        CoreDataConfiguration.defaultStoreName = "Test.sqlite"
-        let defaultConfig = CoreDataConfiguration.defaultConfiguration
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
-        let storeURL = documentsDir.URLByAppendingPathComponent("THCCoreData").URLByAppendingPathComponent("Test.sqlite")
-        
-        XCTAssertEqual(storeURL, defaultConfig.storeURL)
-        XCTAssertEqual(objectModel, defaultConfig.managedObjectModel)
+class TestContextManager: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        // clean up default store directory
+        let storeDirectoryURL = self.defaultStoreURL().URLByDeletingLastPathComponent!
+        if NSFileManager.defaultManager().fileExistsAtPath(storeDirectoryURL.path!) {
+            if (NSFileManager.defaultManager().removeItemAtURL(storeDirectoryURL, error: nil)) {
+                println("successfully deleted default store directory")
+            } else {
+                println("error while deleted default store directory")
+            }
+        }
     }
     
-    func testReset() {
-        let objectModel = NSManagedObjectModel()
-        CoreDataConfiguration.defaultManagedObjectModel = objectModel
-        CoreDataConfiguration.defaultStoreName = "Test.sqlite"
-        let defaultConfig = CoreDataConfiguration.defaultConfiguration
-        // create store
-        let manager = ContextManager.defaultManager
-        
-        let sqliteURL = CoreDataConfiguration.baseFolder.URLByAppendingPathComponent("Test.sqlite")
-        
-        
-        let rawURL = sqliteURL.absoluteString!
-        let shmURL = NSURL(string: rawURL.stringByAppendingString("-shm"))!
-        let walURL = NSURL(string: rawURL.stringByAppendingString("-wal"))!
-        
-        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(sqliteURL.path!))
-        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(shmURL.path!))
-        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(walURL.path!))
-        defaultConfig.deleteStore()
-        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(sqliteURL.path!))
-        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(shmURL.path!))
-        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(walURL.path!))
+    func defaultStoreURL() -> NSURL {
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+        return documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
     }
-}
-
-class TestContextManager: XCTestCase {
 
     func testInitializeContextManager() {
         let objectModel = NSManagedObjectModel()
@@ -61,16 +41,35 @@ class TestContextManager: XCTestCase {
         XCTAssertEqual(NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType, manager.mainContext.parentContext!.concurrencyType)
     }
     
-    func testInitializeWithConfiguration() {
-        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
-        let storeURL = documentsDir.URLByAppendingPathComponent("CoreData.sqlite")
+    func testInitializeDefaultStore() {
         let objectModel = NSManagedObjectModel()
-        let config = CoreDataConfiguration(storeURL: storeURL, managedObjectModel: objectModel)
-        let manager = ContextManager(configuration: config)
+        let storeURL = self.defaultStoreURL()
+        
+        var manager = ContextManager(objectModel: objectModel)
+        var store = manager.mainContext.persistentStoreCoordinator!.persistentStoreForURL(storeURL)
+        
+        XCTAssertNotNil(store)
         XCTAssertEqual(objectModel, manager.mainContext.persistentStoreCoordinator!.managedObjectModel)
-        let persitentStore = manager.mainContext.persistentStoreCoordinator!.persistentStores[0] as! NSPersistentStore
-        XCTAssertEqual(storeURL, persitentStore.URL!)
+        
+        // check if sqlite file got created
+        XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(storeURL.path!))
     }
+    
+//    see TODO in ContextManager
+//    func testFailedInitializeDefaultStore() {
+//        let objectModel = NSManagedObjectModel()
+//        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+//        let storeURL = documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
+//        var manager = ContextManager(objectModel: objectModel)
+//        XCTAssertNotNil(manager)
+//        
+//        var objectModel2 = NSManagedObjectModel()
+//        let newEntity = NSEntityDescription()
+//        newEntity.name = "NewEntity"
+//        objectModel2.entities = [newEntity]
+//        manager = ContextManager(objectModel: objectModel2)
+//        XCTAssertNil(manager)
+//    }
     
     func testPrivateContext() {
         let objectModel = NSManagedObjectModel()

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "THCCoreData"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "A Core Data wrapper"
   s.homepage     = 'https://github.com/webair/thinc.THCCoreData'
   s.license      = 'MIT'
