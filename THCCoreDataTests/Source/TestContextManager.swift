@@ -55,21 +55,21 @@ class TestContextManager: XCTestCase {
         XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(storeURL.path!))
     }
     
-//    see TODO in ContextManager
-//    func testFailedInitializeDefaultStore() {
-//        let objectModel = NSManagedObjectModel()
-//        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
-//        let storeURL = documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
-//        var manager = ContextManager(objectModel: objectModel)
-//        XCTAssertNotNil(manager)
-//        
-//        var objectModel2 = NSManagedObjectModel()
-//        let newEntity = NSEntityDescription()
-//        newEntity.name = "NewEntity"
-//        objectModel2.entities = [newEntity]
-//        manager = ContextManager(objectModel: objectModel2)
-//        XCTAssertNil(manager)
-//    }
+    func testRecreatingDefaultStore() {
+        let objectModel = NSManagedObjectModel()
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+        let storeURL = documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
+        var manager = ContextManager(managedObjectModel: objectModel)
+        XCTAssertNotNil(manager)
+        
+        // fake scheme change
+        var objectModel2 = NSManagedObjectModel()
+        let newEntity = NSEntityDescription()
+        newEntity.name = "NewEntity"
+        objectModel2.entities = [newEntity]
+        manager = ContextManager(managedObjectModel: objectModel2, recreateStoreIfNeeded: true)
+        XCTAssertNotNil(manager)
+    }
     
     func testPrivateContext() {
         let objectModel = NSManagedObjectModel()

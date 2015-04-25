@@ -40,8 +40,15 @@ public class ContextManager {
     
     /**
     Creates a isntance of ContextManager bases on a object model with a sqlite store. The store will be located in documents directory under 'THCCoreData/'
+    
+    :param: managedObjectModel    the object model which is used to create the database
+    :param: recreateStoreIfNeeded If true, the sqlite databse will get recreated if an error occures (default: false)
+    
+    **Warning:** Only use the 'recreateStoreIfNeeded' for development, this can lead to data loss!
+    
+    :returns: Instance of ContextManager
     */
-    convenience public init(managedObjectModel: NSManagedObjectModel) {
+    convenience public init(managedObjectModel: NSManagedObjectModel, recreateStoreIfNeeded: Bool = false) {
         // TODO: change to optional initializer and remove exception as soon this bug is fixed:
         // http://stackoverflow.com/questions/26495586/best-practice-to-implement-a-failable-initializer-in-swift
         
@@ -59,15 +66,37 @@ public class ContextManager {
         ]
         var store: NSPersistentStore? = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteStoreURL, options: options, error: &error)
         if store == nil {
-            NSException(name: "Exception", reason: "Could not create store: \(error)", userInfo: nil).raise()
+            if recreateStoreIfNeeded {
+                let rawURL = sqliteStoreURL.absoluteString!
+                let shmURL = NSURL(string: rawURL.stringByAppendingString("-shm"))!
+                let walURL = NSURL(string: rawURL.stringByAppendingString("-wal"))!
+                let fileManager = NSFileManager.defaultManager()
+                fileManager.removeItemAtURL(sqliteStoreURL, error: nil)
+                fileManager.removeItemAtURL(shmURL, error: nil)
+                fileManager.removeItemAtURL(walURL, error: nil)
+                
+                // try initalizing store again
+                var store: NSPersistentStore? = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteStoreURL, options: options, error: &error)
+                if store == nil {
+                    NSException(name: "Exception", reason: "Could not create store after deleting underlying sqlite database: \(error)", userInfo: nil).raise()
+                }
+            } else {
+            NSException(name: "Exception", reason: "Could not create store, this happens mostly because the scheme changed without migration: \(error)", userInfo: nil).raise()
+            }
         }
         self.init(persistentStoreCoordinator:persistentStoreCoordinator)
     }
     
     /**
     Creates a isntance of ContextManager with the merged object models from the main bundle and with a sqlite store. The store will be located in documents directory under 'THCCoreData/'
+    
+    :param: recreateStoreIfNeeded If true, the sqlite databse will get recreated if an error occures (default: false)
+    
+    **Warning:** Only use the 'recreateStoreIfNeeded' for development, this can lead to data loss!
+    
+    :returns: Instance of ContextManager
     */
-    convenience public init() {
+    convenience public init(recreateStoreIfNeeded: Bool = false) {
         // TODO: change to optional initializer and remove exception as soon this bug is fixed:
         // http://stackoverflow.com/questions/26495586/best-practice-to-implement-a-failable-initializer-in-swift
         
@@ -75,6 +104,6 @@ public class ContextManager {
         if (managedObjectModel == nil) {
             NSException(name: "Exception", reason: "Could not create managedobject model", userInfo: nil).raise()
         }
-        self.init(managedObjectModel: managedObjectModel!)
+        self.init(managedObjectModel: managedObjectModel!, recreateStoreIfNeeded:recreateStoreIfNeeded)
     }
 }
