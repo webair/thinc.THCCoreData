@@ -46,13 +46,29 @@ class TestContextManager: XCTestCase {
         let storeURL = self.defaultStoreURL()
         
         var manager = ContextManager(managedObjectModel: objectModel)
-        var store = manager.mainContext.persistentStoreCoordinator!.persistentStoreForURL(storeURL)
+        var store = manager!.mainContext.persistentStoreCoordinator!.persistentStoreForURL(storeURL)
         
         XCTAssertNotNil(store)
-        XCTAssertEqual(objectModel, manager.mainContext.persistentStoreCoordinator!.managedObjectModel)
+        XCTAssertEqual(objectModel, manager!.mainContext.persistentStoreCoordinator!.managedObjectModel)
         
         // check if sqlite file got created
         XCTAssertTrue(NSFileManager.defaultManager().fileExistsAtPath(storeURL.path!))
+    }
+    
+    func testCreateStoreFailed() {
+        let objectModel = NSManagedObjectModel()
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+        let storeURL = documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
+        var manager = ContextManager(managedObjectModel: objectModel)
+        XCTAssertNotNil(manager)
+        
+        // fake scheme change
+        var objectModel2 = NSManagedObjectModel()
+        let newEntity = NSEntityDescription()
+        newEntity.name = "NewEntity"
+        objectModel2.entities = [newEntity]
+        manager = ContextManager(managedObjectModel: objectModel2)
+        XCTAssertNil(manager)
     }
     
     func testRecreatingDefaultStore() {

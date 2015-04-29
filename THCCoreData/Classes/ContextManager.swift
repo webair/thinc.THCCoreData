@@ -48,10 +48,7 @@ public class ContextManager {
     
     :returns: Instance of ContextManager
     */
-    convenience public init(managedObjectModel: NSManagedObjectModel, recreateStoreIfNeeded: Bool = false) {
-        // TODO: change to optional initializer and remove exception as soon this bug is fixed:
-        // http://stackoverflow.com/questions/26495586/best-practice-to-implement-a-failable-initializer-in-swift
-        
+    convenience public init?(managedObjectModel: NSManagedObjectModel, recreateStoreIfNeeded: Bool = false) {
         let fileManager = NSFileManager.defaultManager()
         let documentsDir = fileManager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
         let sqliteStoreURL = documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
@@ -76,12 +73,13 @@ public class ContextManager {
                 fileManager.removeItemAtURL(walURL, error: nil)
                 
                 // try initalizing store again
-                var store: NSPersistentStore? = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteStoreURL, options: options, error: &error)
-                if store == nil {
-                    NSException(name: "Exception", reason: "Could not create store after deleting underlying sqlite database: \(error)", userInfo: nil).raise()
-                }
-            } else {
-            NSException(name: "Exception", reason: "Could not create store, this happens mostly because the scheme changed without migration: \(error)", userInfo: nil).raise()
+                store = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: sqliteStoreURL, options: options, error: &error)
+            }
+            if store == nil {
+                // TODO: change to optional initializer and remove exception as soon this bug is fixed:
+                // http://stackoverflow.com/questions/26495586/best-practice-to-implement-a-failable-initializer-in-swift
+                self.init(persistentStoreCoordinator:NSPersistentStoreCoordinator())
+                return nil
             }
         }
         self.init(persistentStoreCoordinator:persistentStoreCoordinator)
@@ -96,7 +94,7 @@ public class ContextManager {
     
     :returns: Instance of ContextManager
     */
-    convenience public init(recreateStoreIfNeeded: Bool = false) {
+    convenience public init?(recreateStoreIfNeeded: Bool = false) {
         // TODO: change to optional initializer and remove exception as soon this bug is fixed:
         // http://stackoverflow.com/questions/26495586/best-practice-to-implement-a-failable-initializer-in-swift
         
