@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license      = 'MIT'
   s.author         = { 'Weber Christopher' => 'chrisr.weber@gmail.com' }
   s.ios.deployment_target = '8.0'
-  s.source       = { :git => "https://code.sbb.ch/scm/kd_cp/sbbmapperlib-ios.git", :branch => 'develop' }
+  s.source       = { :git => "https://github.com/webair/thinc.swift.THCCoreData.git", :tag => 'v0.0.1' }
   s.source_files  = "THCCoreData/**/*.swift"
   s.requires_arc = true
 end
