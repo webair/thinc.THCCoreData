@@ -51,12 +51,14 @@ public class ContextManager {
     convenience public init?(managedObjectModel: NSManagedObjectModel, recreateStoreIfNeeded: Bool = false) {
         let fileManager = NSFileManager.defaultManager()
         let documentsDir = fileManager.URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as! NSURL
+        
         let sqliteStoreURL = documentsDir.URLByAppendingPathComponent("THCCoreData/CoreData.sqlite")
         var error: NSError?
         if !fileManager.createDirectoryAtURL(sqliteStoreURL.URLByDeletingLastPathComponent!, withIntermediateDirectories: true, attributes: nil, error:&error) {
             NSException(name: "Exception", reason: "can't create folder in documents", userInfo: nil).raise()
         }
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+
         let options = [
             NSMigratePersistentStoresAutomaticallyOption : true,
             NSInferMappingModelAutomaticallyOption : true

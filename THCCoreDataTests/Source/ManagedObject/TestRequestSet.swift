@@ -95,30 +95,6 @@ class TestRequestSet: CoreDataTestCase {
         XCTAssertEqual(1, requestSet.count)
     }
     
-//    func testOffset() {
-//        let context = self.manager!.mainContext
-//        let obj1 = context.createObject(StubObject.self)
-//        obj1.name = "A"
-//        let obj2 = context.createObject(StubObject.self)
-//        obj2.name = "B"
-//        let obj3 = context.createObject(StubObject.self)
-//        obj3.name = "C"
-//        
-//        // object must be saved to work as expected see TODO in 'RequestSet'
-//        let expectation = self.expectationWithDescription("")
-//        context.persist({(success, error) in
-//            expectation.fulfill()})
-//        self.waitForExpectationsWithTimeout(0.01, handler: nil)
-//        
-//        var requestSet = RequestSet<StubObject>(context:context).sortBy("name").offset(1)
-//        
-//        // there are even more limitations, the execute count function does not work with the 
-//        // fetchOffset values
-//        XCTAssertEqual(obj2, requestSet[0])
-//        XCTAssertEqual(obj3, requestSet[1])
-//        XCTAssertEqual(2, requestSet.count)
-//    }
-    
     func testSorting() {
         let context = self.manager!.mainContext
         let requestSet = RequestSet<StubObject>(context:context)
@@ -142,5 +118,31 @@ class TestRequestSet: CoreDataTestCase {
         XCTAssertEqual(true, requestSet.fetchRequest.sortDescriptors![0].ascending)
         XCTAssertEqual("name2", requestSet.fetchRequest.sortDescriptors![1].key!!)
         XCTAssertEqual(false, requestSet.fetchRequest.sortDescriptors![1].ascending)
+    }
+    
+    func testResetFetchRequest() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        requestSet.filter("name", value: "A")
+        requestSet.sortBy("name")
+        requestSet.limit(1)
+        requestSet.reset()
+        let fetchRequest = requestSet.fetchRequest
+        XCTAssertNil(fetchRequest.predicate)
+        XCTAssertNil(fetchRequest.sortDescriptors)
+        XCTAssertEqual(fetchRequest.fetchLimit, 0)
+    }
+    
+    func testFlush() {
+        let context = self.manager!.mainContext
+        let requestSet = RequestSet<StubObject>(context:context)
+        // accessing elements
+        for stub in requestSet {}
+        let obj1 = context.createObject(StubObject.self)
+        // will still be 0
+        XCTAssertEqual(0, requestSet.count)
+        requestSet.flush()
+        // count will be 1 now
+        XCTAssertEqual(1, requestSet.count)
     }
 }

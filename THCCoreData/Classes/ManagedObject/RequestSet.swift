@@ -144,21 +144,6 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
         return self
     }
     
-//    /**
-//    Sets the offset fot the requestSet
-//    
-//    **Warning:** The offset only works with persisted data,
-//    
-//    :param: offset sets the offset of the requestSet, must be greater than 0
-//    */
-//    public func offset(offset:Int) -> Self {
-//        assert(offset > 0, "invalid offset '\(offset)' must be greater than 0")
-//        // TODO think of fixing the limitation with the offset, but think about the impact with
-//        // fetched results controller
-//        self.fetchRequest.fetchOffset = offset
-//        return self
-//    }
-    
     /**
     Default initializer
     
@@ -200,6 +185,21 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
         }
         self.fetchRequest.sortDescriptors = sortDescriptors
         return self
+    }
+    
+    /**
+    Flushes the fetched objects, if any
+    */
+    public func flush() {
+        self.objects = nil;
+    }
+    
+    /**
+    Resets the requestSet to the default state
+    */
+    public func reset() {
+        self.fetchRequest = self.context.fetchRequest(T)
+        self.flush()
     }
     
     private func fetchObjects() {
