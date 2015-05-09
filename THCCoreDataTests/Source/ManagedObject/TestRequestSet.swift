@@ -14,48 +14,48 @@ import CoreData
 
 class TestRequestSet: CoreDataTestCase {
     func testInit () {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         XCTAssertEqual(context, requestSet.context)
     }
     
     func testCount() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         XCTAssertEqual(0, requestSet.count)
-        context.createObject(StubObject.self)
-        context.createObject(StubObject.self)
-        context.createObject(StubObject.self)
+        context.createObject(Stub.self)
+        context.createObject(Stub.self)
+        context.createObject(Stub.self)
         XCTAssertEqual(3, requestSet.count)
     }
     
     func testSubscript() {
-        let context = self.manager!.mainContext
-        let object = context.createObject(StubObject.self)
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let object = context.createObject(Stub.self)
+        let requestSet = RequestSet<Stub>(context:context)
         XCTAssertEqual(object, requestSet[0])
     }
     
     func testIterate() {
-        let context = self.manager!.mainContext
-        let object = context.createObject(StubObject.self)
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let object = context.createObject(Stub.self)
+        let requestSet = RequestSet<Stub>(context:context)
         for fetchedObject in requestSet {
             println(fetchedObject)
         }
     }
 
     func testPredicateFilter() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         let predicate = NSPredicate(format:"name='test'")
         requestSet.filter(predicate)
         XCTAssertEqual(predicate, requestSet.fetchRequest.predicate!)
     }
     
     func testChainFilter() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         let predicate1 = NSPredicate(format:"name='test1'")
         let predicate2 = NSPredicate(format:"name='test2'")
         requestSet.filter(predicate1).filter(predicate2)
@@ -63,22 +63,22 @@ class TestRequestSet: CoreDataTestCase {
     }
     
     func testFilter() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         requestSet.filter("name", value:"Test")
         XCTAssertEqual(NSPredicate(format: "name = 'Test'"), requestSet.fetchRequest.predicate!)
     }
     
     func testTupleListFilter() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         requestSet.filter([(key:"name", value:"Test"), (key:"name", value:"Test2")])
         XCTAssertEqual(NSPredicate(format: "name = 'Test' AND name = 'Test2'"), requestSet.fetchRequest.predicate!)
     }
     
     func testORFilter() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         let predicate1 = NSPredicate(format:"name='test1'")
         let predicate2 = NSPredicate(format:"name='test2'")
         requestSet.filter(predicate1).filter(predicate2, mode: RequestFilterMode.OR)
@@ -86,18 +86,18 @@ class TestRequestSet: CoreDataTestCase {
     }
     
     func testLimit() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
-        let obj1 = context.createObject(StubObject.self)
-        let obj2 = context.createObject(StubObject.self)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
+        let obj1 = context.createObject(Stub.self)
+        let obj2 = context.createObject(Stub.self)
         XCTAssertEqual(2, requestSet.count)
         requestSet.limit(1)
         XCTAssertEqual(1, requestSet.count)
     }
     
     func testSorting() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         requestSet.sortBy("name")
         XCTAssertEqual(1, requestSet.fetchRequest.sortDescriptors!.count)
         XCTAssertEqual("name", requestSet.fetchRequest.sortDescriptors![0].key!!)
@@ -110,8 +110,8 @@ class TestRequestSet: CoreDataTestCase {
     }
     
     func testSortingList() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         requestSet.sortBy([("name", RequestSortOrder.ASCENDING), ("name2", RequestSortOrder.DESCENDING)])
         XCTAssertEqual(2, requestSet.fetchRequest.sortDescriptors!.count)
         XCTAssertEqual("name", requestSet.fetchRequest.sortDescriptors![0].key!!)
@@ -121,8 +121,8 @@ class TestRequestSet: CoreDataTestCase {
     }
     
     func testResetFetchRequest() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         requestSet.filter("name", value: "A")
         requestSet.sortBy("name")
         requestSet.limit(1)
@@ -134,11 +134,11 @@ class TestRequestSet: CoreDataTestCase {
     }
     
     func testFlush() {
-        let context = self.manager!.mainContext
-        let requestSet = RequestSet<StubObject>(context:context)
+        let context = self.manager.mainContext
+        let requestSet = RequestSet<Stub>(context:context)
         // accessing elements
         for stub in requestSet {}
-        let obj1 = context.createObject(StubObject.self)
+        let obj1 = context.createObject(Stub.self)
         // will still be 0
         XCTAssertEqual(0, requestSet.count)
         requestSet.flush()

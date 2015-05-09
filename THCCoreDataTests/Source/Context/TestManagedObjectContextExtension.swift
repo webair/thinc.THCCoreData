@@ -14,26 +14,26 @@ import THCCoreData
 class TestManagedObjectContextExtension: CoreDataTestCase {
     
     func testFetchRequest() {
-        let context = self.manager!.mainContext
-        let fetchRequest = context.fetchRequest(StubObject.self)
-        XCTAssertEqual(StubObject.entityName(), fetchRequest.entityName!)
+        let context = self.manager.mainContext
+        let fetchRequest = context.fetchRequest(Stub)
+        XCTAssertEqual(Stub.entityName(), fetchRequest.entityName!)
     }
     
     func testCreateObject() {
-        let context = self.manager!.mainContext
-        let stub: StubObject = context.createObject(StubObject.self)
+        let context = self.manager.mainContext
+        let stub: Stub = context.createObject(Stub)
         XCTAssertNotNil(stub)
     }
     
     func testRequestSet() {
-        let context = self.manager!.mainContext
-        let requestSet = context.requestSet(StubObject.self)
+        let context = self.manager.mainContext
+        let requestSet = context.requestSet(Stub)
         XCTAssertNotNil(requestSet)
     }
     
     func testPersist() {
-        let context = self.manager!.mainContext
-        let obj = context.createObject(StubObject)
+        let context = self.manager.mainContext
+        let obj = context.createObject(Stub)
         obj.name = "test"
         let expectation = self.expectationWithDescription("Called success")
         context.persist({(success:Bool, error:NSError?) -> Void in
@@ -41,6 +41,6 @@ class TestManagedObjectContextExtension: CoreDataTestCase {
             expectation.fulfill()
         })
         self.waitForExpectationsWithTimeout(0.1, handler: nil)
-        XCTAssertEqual(1, self.manager!.mainContext.parentContext!.countForFetchRequest(context.fetchRequest(StubObject), error: nil))
+        XCTAssertEqual(1, self.manager.mainContext.parentContext!.countForFetchRequest(context.fetchRequest(Stub), error: nil))
     }
 }

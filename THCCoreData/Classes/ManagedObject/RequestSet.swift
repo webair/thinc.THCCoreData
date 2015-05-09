@@ -31,7 +31,7 @@ public enum RequestSortOrder {
 /**
 *  Request set class, inspired by django QuerySet
 */
-public class RequestSet<T:NamedManagedObject>: SequenceType {
+public class RequestSet<T:NSManagedObject>: SequenceType {
     
     private var objects:[NSManagedObject]?
     
@@ -47,6 +47,7 @@ public class RequestSet<T:NamedManagedObject>: SequenceType {
         }
     }
     
+    /// the currenty used fetch request, will return a copy
     private(set) public var fetchRequest: NSFetchRequest
     
     /**

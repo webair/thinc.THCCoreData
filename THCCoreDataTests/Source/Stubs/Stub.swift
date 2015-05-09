@@ -1,5 +1,5 @@
 //
-//  StubObject.swift
+//  Stub.swift
 //  THCCoreData
 //
 //  Created by Christopher weber on 09.05.15.
@@ -9,12 +9,8 @@
 import Foundation
 import CoreData
 
-class StubObject: NSManagedObject {
+class Stub: NSManagedObject {
 
     @NSManaged var name: String
-    
-    override class func entityName() -> String {
-        return "StubEntity"
-    }
 
 }

@@ -4,18 +4,18 @@
 A Core Data Extension written with Swift. 
 
 # Usage
-Make sure that all of you managed objects implements the protocol 'NamedManageObject' and return its entity name.
+By default the library assumes that the managed object defined in the model file have the same name as the entities. If you have defined different entity names in the object model you need to override the entityName function in your managed object class:
 
-You can also use [mogenerator](https://github.com/rentzsch/mogenerator) to generate this behaviour (Very nice tool, best thanks to the creators!). If using the mogenerator you need to add a base class which implements the 'ManagedObjectEntity' protocol or use my [fork](https://github.com/webair/mogenerator) which allowes you to add a protocol parameter and framework includes to the swift template:
-    
-    mogenerator --base-class-import "THCCoreData" \
-                --protocol "ManagedObjectEntity" \
-                ...
+    override class func entityName() -> String {
+        return "StubEntity"
+    }
+
+You can also use [mogenerator](https://github.com/rentzsch/mogenerator) to generate this behaviour (Very nice tool, best thanks to the creators!).
 
 ## ContextManager
-Get the default manager. It will create a sqlite store in the documents folder and merges all object model files from the main bundle.  
+Get the default manager. It will create a sqlite store in the documents folder and merges all object model files from the main bundle. 
 
-    let manager = ContextManager()
+    let manager = ContextManager()!
     let mainContext = manager.mainContext
         
 Alternativly you can also initilize a customized context manager by passing a managedObjectModel (the sqlite store will still get created for you)...
@@ -34,28 +34,41 @@ When using the sqlite auto create initializers, you can set the 'recreateStoreIf
 If you like to work with a singleton manager you can easily create your own ContextManager extension:
 
 	public extension ContextManager {
-    	static let defaultManager: ContextManager = {
-        	return ContextManager()
-    	}()
+    	static let sharedInstance: ContextManager = {
+        	let reccreateStoreIfNeeded = false
+        	#if DEBUG
+            recreateStoreIfNeeded = true
+        	#endif
+        	return ContextManager(recreateStoreIfNeeded:true)!
+       }()
 	}
+	
+	// access singleton main context
+	ContextManager.sharedInstance.mainContext
 
 If you need a new private context, you can get it from the manager:
     
     let privateContext = manager.privateContext
 	
-## NSManagedContext
+## NSManagedObjectContext
 This library extends the default NSManagedObjectContext class. Assume we have generated a managed object subclass 'MyObject' from an entity, you can now insert it to the context like that:
 
-    let context = ContextManager.defaultManager.mainContext
+    let context = ContextManager().mainContext
     let myObject = context.createObject(MyObject)
     
 You can also get a default NSFetchRequest for a given managed object subclass:
     
     let fetchRequest = context.fetchRequest(MyObject)
     
-Last but no least you can also get a RequestSet (see RequestSet) class from the context:
+Last but no least you can get a RequestSet (see RequestSet) class from the context:
 
 	let requestSet = context.requestSet(MyObject)
+
+## NSManagedObject
+This library provides following extension for the 'NSManagedObject' class:
+	
+	// create object
+	let requestSet = MyObject.create(context)
  
 ## RequestSet
 
@@ -64,7 +77,7 @@ This class was inspired by the django framework for python (QuerySet). It helps 
 
 ### init request set
 
-	let requestSet = RequestSet<MyManagedObject>(context: manager.mainContext)
+	let requestSet = RequestSet<MyManagedObject>(context: context)
 
 ### Accessing data
 	

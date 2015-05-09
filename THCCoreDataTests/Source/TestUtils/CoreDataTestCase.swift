@@ -13,14 +13,11 @@ import CoreData
 
 class CoreDataTestCase: XCTestCase {
 
-    var manager: ContextManager?
-    
-    override func setUp() {
+    var manager: ContextManager = {
         let objectModelURL = NSBundle(forClass: CoreDataTestCase.self).URLForResource("Model", withExtension: "momd")!
         let objectModel = NSManagedObjectModel(contentsOfURL: objectModelURL)!
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
         coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)
-        self.manager = ContextManager(persistentStoreCoordinator: coordinator)
-    }
-
+        return ContextManager(persistentStoreCoordinator: coordinator)
+    }()
 }
