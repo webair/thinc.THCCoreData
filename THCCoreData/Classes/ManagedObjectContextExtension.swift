@@ -11,11 +11,6 @@ import CoreData
 
 public extension NSManagedObjectContext {
     
-    
-    public func helloWorld<T:NSManagedObject>(objectType: T.Type) {
-    
-    }
-    
     /**
     Creates a instance of the given ManagedObject class
     
