@@ -40,7 +40,7 @@ class TestManagedObjectContextExtension: CoreDataTestCase {
             XCTAssertTrue(success)
             expectation.fulfill()
         })
-        self.waitForExpectationsWithTimeout(0.1, handler: nil)
+        self.waitForExpectationsWithTimeout(0.01, handler: nil)
         XCTAssertEqual(1, self.manager.mainContext.parentContext!.countForFetchRequest(context.fetchRequest(Stub), error: nil))
     }
 }
