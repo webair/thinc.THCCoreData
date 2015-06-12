@@ -9,13 +9,29 @@
 import Foundation
 import CoreData
 
-public class FetchedTableController: NSObject, NSFetchedResultsControllerDelegate {
+public protocol FetchedResultsDelegate: class {
+    func beginUpdate()
+    func endUpdate()
+    
+    func updateObject(indexPath:NSIndexPath)
+    func insertObject(indexPath:NSIndexPath)
+    func deleteObject(indexPath:NSIndexPath)
+    func moveObject(indexPath:NSIndexPath, newIndexPath:NSIndexPath)
+    
+    func insertSection(sectionIndex:Int)
+    func deleteSection(sectionIndex:Int)
+}
+
+public class FetchedTableController<T:NSManagedObject>: FetchedResultsDelegate {
 
     /// table view which will get updated
     public let tableView: UITableView
     
     /// internal fetchedResultsController which is used for updating the table view
     public var fetchedResultsController: NSFetchedResultsController
+    
+    /// adapter class for delegate calles
+    private var resultsControllerDelegate: FetchedResultsControllerDelegateAdapter?
     
     /**
     Initializes a FetchedTableController
@@ -30,8 +46,8 @@ public class FetchedTableController: NSObject, NSFetchedResultsControllerDelegat
     public init(tableView: UITableView, fetchRequest: NSFetchRequest, context:NSManagedObjectContext, sectionKeyPath:String?=nil) {
         self.tableView = tableView
         self.fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: sectionKeyPath, cacheName: nil)
-        super.init()
-        self.fetchedResultsController.delegate = self
+        self.resultsControllerDelegate = FetchedResultsControllerDelegateAdapter(delegate: self)
+        self.fetchedResultsController.delegate = self.resultsControllerDelegate
     }
     
     /**
@@ -45,37 +61,37 @@ public class FetchedTableController: NSObject, NSFetchedResultsControllerDelegat
         return (success, error)
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch(type) {
-        case .Insert:
-            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-        case .Update:
-            self.tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-        case .Move:
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-            self.tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-        case .Delete:
-            self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
-        }
+    public func beginUpdate() {
+        self.tableView.beginUpdates()
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        switch (type) {
-        case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: UITableViewRowAnimation.Fade)
-        case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: UITableViewRowAnimation.Fade)
-        default:
-            assert(true, "change type \(type) should never been the case when section gets updated")
-        }
-    }
-    
-    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    public func endUpdate() {
         self.tableView.endUpdates()
     }
     
-    public func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        self.tableView.beginUpdates()
+    public func insertObject(indexPath: NSIndexPath) {
+        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    public func updateObject(indexPath: NSIndexPath) {
+        self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    public func deleteObject(indexPath: NSIndexPath) {
+        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    public func moveObject(indexPath: NSIndexPath, newIndexPath: NSIndexPath) {
+        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        self.tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    public func insertSection(sectionIndex: Int) {
+        self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    public func deleteSection(sectionIndex: Int) {
+        self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: UITableViewRowAnimation.Fade)
     }
     
     /**
@@ -96,6 +112,54 @@ public class FetchedTableController: NSObject, NSFetchedResultsControllerDelegat
     public func numberOfRowsInSection(sectionIndex: Int) -> Int {
         let sectionInfo = self.fetchedResultsController.sections![sectionIndex] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
+    }
+    
+    
+}
+
+/**
+*  Class for handling the delegate, because generics don't work for this
+*/
+public class FetchedResultsControllerDelegateAdapter: NSObject, NSFetchedResultsControllerDelegate {
+    
+    private let fetchedResultsDelegate: FetchedResultsDelegate
+    
+    public init (delegate: FetchedResultsDelegate) {
+        self.fetchedResultsDelegate = delegate
+    }
+    
+    public func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        self.fetchedResultsDelegate.beginUpdate()
+    }
+    
+    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        self.fetchedResultsDelegate.endUpdate()
+    }
+    
+    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        
+        switch(type) {
+        case .Insert:
+            self.fetchedResultsDelegate.insertObject(newIndexPath!)
+        case .Update:
+            self.fetchedResultsDelegate.updateObject(indexPath!)
+        case .Move:
+            self.fetchedResultsDelegate.moveObject(indexPath!, newIndexPath: newIndexPath!)
+        case .Delete:
+            self.fetchedResultsDelegate.deleteObject(indexPath!)
+        }
+    }
+    
+    public func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        
+        switch (type) {
+        case .Insert:
+            self.fetchedResultsDelegate.insertSection(sectionIndex)
+        case .Delete:
+            self.fetchedResultsDelegate.deleteSection(sectionIndex)
+        default:
+            assert(true, "change type \(type) should never been the case when section gets updated")
+        }
     }
     
 
