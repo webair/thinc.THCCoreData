@@ -19,7 +19,7 @@ extension NSManagedObject {
         return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: context);
     }
     
-    public class func create(context: NSManagedObjectContext) -> Self {
-        return context.createObject(self)
-    }
+//    public class func create(context: NSManagedObjectContext) -> Self {
+//        return context.createObject(self)
+//    }
 }

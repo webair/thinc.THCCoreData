@@ -17,7 +17,10 @@ class CoreDataTestCase: XCTestCase {
         let objectModelURL = NSBundle(forClass: CoreDataTestCase.self).URLForResource("Model", withExtension: "momd")!
         let objectModel = NSManagedObjectModel(contentsOfURL: objectModelURL)!
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel)
-        coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil, error: nil)
+        do {
+            try coordinator.addPersistentStoreWithType(NSInMemoryStoreType, configuration: nil, URL: nil, options: nil)
+        } catch _ {
+        }
         return ContextManager(persistentStoreCoordinator: coordinator)
     }()
 }

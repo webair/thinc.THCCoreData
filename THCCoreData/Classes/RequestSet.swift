@@ -53,9 +53,9 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     subscript for iterating over queryset
     
-    :param: index index to access
+    - parameter index: index to access
     
-    :returns: object at index
+    - returns: object at index
     */
     public subscript(index: Int) -> T {
         get {
@@ -68,12 +68,12 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Generator class for iterating
     
-    :returns: Generator instance for iterating over object
+    - returns: Generator instance for iterating over object
     */
-    public func generate() -> GeneratorOf<T> {
+    public func generate() -> AnyGenerator<T> {
         self.fetchObjects()
         var nextIndex = 0
-        return GeneratorOf<T> {
+        return anyGenerator {
             if self.objects == nil || nextIndex == self.objects!.count {
                 return nil
             }
@@ -84,10 +84,10 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     filter function
     
-    :param: predicate filter predicate
-    :param: mode      filter mode (default: FilterMode.AND)
+    - parameter predicate: filter predicate
+    - parameter mode:      filter mode (default: FilterMode.AND)
     
-    :returns: Instance of requestSet, used for chaining
+    - returns: Instance of requestSet, used for chaining
     */
     public func filter(predicate:NSPredicate, mode:RequestFilterMode=RequestFilterMode.AND) -> Self {
         //TODO: validate predicate
@@ -107,11 +107,11 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Filter function
     
-    :param: key   key to filter
-    :param: value value for key
-    :param: mode  filter mode (default: FilterMode.AND)
+    - parameter key:   key to filter
+    - parameter value: value for key
+    - parameter mode:  filter mode (default: FilterMode.AND)
     
-    :returns: Instance of requestSet, used for chaining
+    - returns: Instance of requestSet, used for chaining
     */
     public func filter(key:String, value:AnyObject, mode:RequestFilterMode=RequestFilterMode.AND) -> Self {
         let predicate = NSPredicate(format: "%K = %@", key, value as! NSObject)
@@ -121,10 +121,10 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Filter function
     
-    :param: filters array of filter tuples
-    :param: mode    filter mode (default: FilterMode.AND)
+    - parameter filters: array of filter tuples
+    - parameter mode:    filter mode (default: FilterMode.AND)
     
-    :returns: Instance of requestSet, used for chaining
+    - returns: Instance of requestSet, used for chaining
     */
     public func filter(filters: [(key:String, value:AnyObject)], mode:RequestFilterMode=RequestFilterMode.AND) -> Self {
         for filter in filters{
@@ -136,9 +136,9 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Sets the limit fot the requestSet
     
-    :param: limit set the limit value
+    - parameter limit: set the limit value
     
-    :returns: Instance of requestSet, used for chaining
+    - returns: Instance of requestSet, used for chaining
     */
     public func limit(limit:Int) -> Self {
         self.fetchRequest.fetchLimit = limit
@@ -148,9 +148,9 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Default initializer
     
-    :param: context managed context used for request objects
+    - parameter context: managed context used for request objects
     
-    :returns: Instance of RequestSet
+    - returns: Instance of RequestSet
     */
     public init(context:NSManagedObjectContext) {
         self.context = context
@@ -160,10 +160,10 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Sets the sort descriptors for the request set
     
-    :param: key   key to sort by
-    :param: order defines the sort order (default: RequestSortOrder.ASCENDING)
+    - parameter key:   key to sort by
+    - parameter order: defines the sort order (default: RequestSortOrder.ASCENDING)
     
-    :returns: Instance of requestSet, used for chaini
+    - returns: Instance of requestSet, used for chaini
     */
     public func sortBy(key:String, order:RequestSortOrder = RequestSortOrder.ASCENDING) -> Self {
         let ascending = order == RequestSortOrder.ASCENDING
@@ -174,9 +174,9 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     /**
     Sets multible sort descriptors
     
-    :param: sorts array of sort tuples
+    - parameter sorts: array of sort tuples
     
-    :returns:  Instance of requestSet, used for chaining
+    - returns:  Instance of requestSet, used for chaining
     */
     public func sortBy(sorts:[(key:String, order:RequestSortOrder)]) -> Self {
         var sortDescriptors: [NSSortDescriptor] = []
@@ -205,8 +205,12 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
     
     private func fetchObjects() {
         if self.objects == nil {
-            var error:NSError?
-            self.objects = self.context.executeFetchRequest(self.fetchRequest, error: &error) as? [NSManagedObject]
+            do {
+                self.objects = try self.context.executeFetchRequest(self.fetchRequest) as? [NSManagedObject]
+            } catch {
+                self.objects = nil
+            }
+
         }
     }
 }

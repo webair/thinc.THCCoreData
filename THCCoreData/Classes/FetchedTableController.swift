@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Thinc. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
 
 public protocol FetchedResultsDelegate: class {
@@ -36,12 +36,12 @@ public class FetchedTableController<T:NSManagedObject>: FetchedResultsDelegate {
     /**
     Initializes a FetchedTableController
     
-    :param: tableView      corresponding table view
-    :param: fetchRequest   used fetch request
-    :param: context        used context
-    :param: sectionKeyPath section key path for section support
+    - parameter tableView:      corresponding table view
+    - parameter fetchRequest:   used fetch request
+    - parameter context:        used context
+    - parameter sectionKeyPath: section key path for section support
     
-    :returns: initialized fetched table controller
+    - returns: initialized fetched table controller
     */
     public init(tableView: UITableView, fetchRequest: NSFetchRequest, context:NSManagedObjectContext, sectionKeyPath:String?=nil) {
         self.tableView = tableView
@@ -53,11 +53,18 @@ public class FetchedTableController<T:NSManagedObject>: FetchedResultsDelegate {
     /**
     Fetched the giben fetch request
     
-    :returns: tuple if fetches succeeded
+    - returns: tuple if fetches succeeded
     */
     public func fetch() -> (success:Bool, error: NSError?) {
         var error: NSError?
-        let success = self.fetchedResultsController.performFetch(&error)
+        let success: Bool
+        do {
+            try self.fetchedResultsController.performFetch()
+            success = true
+        } catch let error1 as NSError {
+            error = error1
+            success = false
+        }
         return (success, error)
     }
     
@@ -97,7 +104,7 @@ public class FetchedTableController<T:NSManagedObject>: FetchedResultsDelegate {
     /**
     Number of section for the current fetch request
     
-    :returns: number of section
+    - returns: number of section
     */
     public func numberOfSections() -> Int {
         return self.fetchedResultsController.sections!.count
@@ -105,12 +112,12 @@ public class FetchedTableController<T:NSManagedObject>: FetchedResultsDelegate {
     
     /**
     
-    :param: sectionIndex given section index
+    - parameter sectionIndex: given section index
     
-    :returns: number of objects for the given section index
+    - returns: number of objects for the given section index
     */
     public func numberOfRowsInSection(sectionIndex: Int) -> Int {
-        let sectionInfo = self.fetchedResultsController.sections![sectionIndex] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchedResultsController.sections![sectionIndex] as NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
@@ -136,7 +143,7 @@ public class FetchedResultsControllerDelegateAdapter: NSObject, NSFetchedResults
         self.fetchedResultsDelegate.endUpdate()
     }
     
-    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         
         switch(type) {
         case .Insert:
