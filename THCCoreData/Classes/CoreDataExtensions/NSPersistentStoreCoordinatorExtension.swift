@@ -10,7 +10,7 @@ import CoreData
 
 extension NSPersistentStoreCoordinator {
     
-    public static func persistentStoreCoordinatorWithDefaultStore(managedObjectModel:NSManagedObjectModel, recreateStoreIfNeeded:Bool=false) throws -> NSPersistentStoreCoordinator {
+    public static func persistentStoreCoordinatorWithDefaultStore(managedObjectModel:NSManagedObjectModel) throws -> NSPersistentStoreCoordinator {
         
         let documentsDir = NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask).last as NSURL!
         let sqliteStoreURL = documentsDir.URLByAppendingPathComponent("CoreData.sqlite")
