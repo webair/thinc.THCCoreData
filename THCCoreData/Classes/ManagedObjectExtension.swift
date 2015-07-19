@@ -15,7 +15,7 @@ extension NSManagedObject {
         return NSStringFromClass(self).componentsSeparatedByString(".").last!
     }
     
-    public class func entity(context: NSManagedObjectContext) -> NSEntityDescription! {
+    public class func entity(context: NSManagedObjectContext!) -> NSEntityDescription! {
         return NSEntityDescription.entityForName(self.entityName(), inManagedObjectContext: context);
     }
     

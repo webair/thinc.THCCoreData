@@ -36,8 +36,8 @@ class TestManagedObjectContextExtension: CoreDataTestCase {
         let obj = context.createObject(Stub)
         obj.name = "test"
         let expectation = self.expectationWithDescription("Called success")
-        context.persist({(success:Bool, error:NSError?) -> Void in
-            XCTAssertTrue(success)
+        context.persist({(error) -> Void in
+            XCTAssertNil(error)
             expectation.fulfill()
         })
         self.waitForExpectationsWithTimeout(0.01, handler: nil)

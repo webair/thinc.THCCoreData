@@ -27,8 +27,6 @@
 
 /* Begin PBXFileReference section */
 		030BF6AA1AD3080800F804C5 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		030BF6B21AD31DEB00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
-		030BF6B41AD31E1C00F804C5 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "Pods/../build/Release-iphoneos/Pods.framework"; sourceTree = "<group>"; };
 		0337287A1B20B2DA0039638E /* ContextManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
 		0337287B1B20B2DA0039638E /* FetchedTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedTableController.swift; sourceTree = "<group>"; };
 		0337287C1B20B2DA0039638E /* ManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectContextExtension.swift; sourceTree = "<group>"; };
@@ -42,18 +40,11 @@
 		0337288B1B20B2FF0039638E /* TestRequestSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestSet.swift; sourceTree = "<group>"; };
 		0337288D1B20B2FF0039638E /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		033728951B2167BC0039638E /* TestFetchedTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFetchedTableController.swift; sourceTree = "<group>"; };
-		03A11DB01AD3257100D87610 /* Pods_THCCoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_THCCoreData.framework; path = "Pods/../build/Debug-iphoneos/Pods_THCCoreData.framework"; sourceTree = "<group>"; };
 		03CE35561AD2A6E30082AB52 /* THCCoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = THCCoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CE355A1AD2A6E30082AB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03CE355B1AD2A6E30082AB52 /* THCCoreData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = THCCoreData.h; sourceTree = "<group>"; };
 		03CE35611AD2A6E30082AB52 /* THCCoreDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = THCCoreDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03CE35671AD2A6E30082AB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34AA241D9817D441194720DE /* Pods-THCCoreData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THCCoreData.release.xcconfig"; path = "Pods/Target Support Files/Pods-THCCoreData/Pods-THCCoreData.release.xcconfig"; sourceTree = "<group>"; };
-		3736F234333EE28F0D08503B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		5CADA650457230C11C7F2347 /* Pods-THCCoreData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-THCCoreData.debug.xcconfig"; path = "Pods/Target Support Files/Pods-THCCoreData/Pods-THCCoreData.debug.xcconfig"; sourceTree = "<group>"; };
-		8240BB53434954CD625502AC /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		86621673906DE1B3793DBCD6 /* Pods_THCCoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_THCCoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD353C8542615F5447B1FF3C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,8 +123,6 @@
 				03CE35581AD2A6E30082AB52 /* THCCoreData */,
 				03CE35651AD2A6E30082AB52 /* THCCoreDataTests */,
 				03CE35571AD2A6E30082AB52 /* Products */,
-				1D79BCF8B9F59355A46B48C0 /* Pods */,
-				CCC541EEA131F135F3071F10 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -180,29 +169,6 @@
 				03CE35671AD2A6E30082AB52 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		1D79BCF8B9F59355A46B48C0 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				5CADA650457230C11C7F2347 /* Pods-THCCoreData.debug.xcconfig */,
-				34AA241D9817D441194720DE /* Pods-THCCoreData.release.xcconfig */,
-				8240BB53434954CD625502AC /* Pods.debug.xcconfig */,
-				3736F234333EE28F0D08503B /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		CCC541EEA131F135F3071F10 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				03A11DB01AD3257100D87610 /* Pods_THCCoreData.framework */,
-				030BF6B41AD31E1C00F804C5 /* Pods.framework */,
-				030BF6B21AD31DEB00F804C5 /* Pods.framework */,
-				86621673906DE1B3793DBCD6 /* Pods_THCCoreData.framework */,
-				BD353C8542615F5447B1FF3C /* Pods.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +226,7 @@
 		03CE354D1AD2A6E30082AB52 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = Thinc;
 				TargetAttributes = {
