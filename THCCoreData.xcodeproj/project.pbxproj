@@ -22,8 +22,6 @@
 		03D2E40F1B5BCA1B00C1F75A /* TestRequestSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2E4021B5BCA1B00C1F75A /* TestRequestSet.swift */; };
 		03D2E4101B5BCA1B00C1F75A /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2E4041B5BCA1B00C1F75A /* CoreDataTestCase.swift */; };
 		03D2E4121B5BCA1B00C1F75A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 03D2E4071B5BCA1B00C1F75A /* Model.xcdatamodeld */; };
-		03D2E4151B5BD2E800C1F75A /* NSPersistentStoreCoordinatorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2E4141B5BD2E800C1F75A /* NSPersistentStoreCoordinatorExtension.swift */; };
-		03D2E4181B5BD37B00C1F75A /* NSPerstistentStoreCoordinatorExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03D2E4171B5BD37B00C1F75A /* NSPerstistentStoreCoordinatorExtensionTests.swift */; };
 		03DBAB0C1B5BC81D003CB863 /* THCCoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03DBAB011B5BC81D003CB863 /* THCCoreData.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,8 +53,6 @@
 		03D2E4041B5BCA1B00C1F75A /* CoreDataTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestCase.swift; sourceTree = "<group>"; };
 		03D2E4051B5BCA1B00C1F75A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03D2E4081B5BCA1B00C1F75A /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		03D2E4141B5BD2E800C1F75A /* NSPersistentStoreCoordinatorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPersistentStoreCoordinatorExtension.swift; sourceTree = "<group>"; };
-		03D2E4171B5BD37B00C1F75A /* NSPerstistentStoreCoordinatorExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPerstistentStoreCoordinatorExtensionTests.swift; sourceTree = "<group>"; };
 		03DBAB011B5BC81D003CB863 /* THCCoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = THCCoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DBAB0B1B5BC81D003CB863 /* THCCoreDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = THCCoreDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -93,7 +89,6 @@
 		03D2E3EB1B5BC89D00C1F75A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				03D2E4131B5BD26100C1F75A /* CoreDataExtensions */,
 				03D2E3EC1B5BC89D00C1F75A /* ContextManager.swift */,
 				03D2E3ED1B5BC89D00C1F75A /* FetchedTableController.swift */,
 				03D2E3EE1B5BC89D00C1F75A /* ManagedObjectContextExtension.swift */,
@@ -106,7 +101,6 @@
 		03D2E3FA1B5BCA1B00C1F75A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				03D2E4161B5BD35E00C1F75A /* CoreDataExtensions */,
 				03D2E3FB1B5BCA1B00C1F75A /* Stubs */,
 				03D2E3FE1B5BCA1B00C1F75A /* TestContextManager.swift */,
 				03D2E3FF1B5BCA1B00C1F75A /* TestFetchedTableController.swift */,
@@ -141,22 +135,6 @@
 				03D2E4071B5BCA1B00C1F75A /* Model.xcdatamodeld */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		03D2E4131B5BD26100C1F75A /* CoreDataExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				03D2E4141B5BD2E800C1F75A /* NSPersistentStoreCoordinatorExtension.swift */,
-			);
-			path = CoreDataExtensions;
-			sourceTree = "<group>";
-		};
-		03D2E4161B5BD35E00C1F75A /* CoreDataExtensions */ = {
-			isa = PBXGroup;
-			children = (
-				03D2E4171B5BD37B00C1F75A /* NSPerstistentStoreCoordinatorExtensionTests.swift */,
-			);
-			path = CoreDataExtensions;
 			sourceTree = "<group>";
 		};
 		03DBAAF71B5BC81D003CB863 = {
@@ -295,7 +273,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03D2E3F61B5BC89D00C1F75A /* ManagedObjectExtension.swift in Sources */,
-				03D2E4151B5BD2E800C1F75A /* NSPersistentStoreCoordinatorExtension.swift in Sources */,
 				03D2E3F71B5BC89D00C1F75A /* RequestSet.swift in Sources */,
 				03D2E3F41B5BC89D00C1F75A /* FetchedTableController.swift in Sources */,
 				03D2E3F51B5BC89D00C1F75A /* ManagedObjectContextExtension.swift in Sources */,
@@ -309,7 +286,6 @@
 			files = (
 				03D2E4101B5BCA1B00C1F75A /* CoreDataTestCase.swift in Sources */,
 				03D2E40D1B5BCA1B00C1F75A /* TestManagedObjectContextExtension.swift in Sources */,
-				03D2E4181B5BD37B00C1F75A /* NSPerstistentStoreCoordinatorExtensionTests.swift in Sources */,
 				03D2E40C1B5BCA1B00C1F75A /* TestFetchedTableController.swift in Sources */,
 				03D2E40A1B5BCA1B00C1F75A /* StubObject.swift in Sources */,
 				03D2E40B1B5BCA1B00C1F75A /* TestContextManager.swift in Sources */,

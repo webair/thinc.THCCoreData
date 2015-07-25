@@ -94,9 +94,10 @@ public class RequestSet<T:NSManagedObject>: SequenceType {
         if let fetchPredicate = self.fetchRequest.predicate {
             switch (mode) {
                 case .AND:
-                    self.fetchRequest.predicate = NSCompoundPredicate.andPredicateWithSubpredicates([fetchPredicate, predicate])
+                    self.fetchRequest.predicate =
+                        NSCompoundPredicate(andPredicateWithSubpredicates:[fetchPredicate, predicate])
                 case .OR:
-                    self.fetchRequest.predicate = NSCompoundPredicate.orPredicateWithSubpredicates([fetchPredicate, predicate])
+                    self.fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates:[fetchPredicate, predicate])
             }
         } else {
             self.fetchRequest.predicate = predicate
